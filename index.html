@@ -120,10 +120,10 @@ const PRODUTOS = [
   { id:"porta-livros", nome:"Porta-livros", preco:20,
     descricao:"Mantém os livros em pé na estante, com uma silhueta que vira decoração.",
     fotos:[["img/porta-livros-1.jpg","Na estante"],["img/porta-livros-2.jpg","Detalhe do rosto, com óculos"]] },
-  { id:"enfeite-porta", nome:"Enfeite de porta de Natal", preco:null,
+  { id:"enfeite-porta", nome:"Enfeite de porta de Natal", preco:40,
     descricao:"Cantoneira colorida que se apoia no batente e deixa a entrada no clima de Natal.",
     fotos:[["img/enfeite-porta-1.jpg","Na porta"],["img/enfeite-porta-2.jpg","De pertinho"]] },
-  { id:"natal-mesa", nome:"Porta-guardanapo de Natal", preco:null, opcoes:[["Unidade",10],["Kit 3 cores",20],["Placa Feliz Natal",20],["Placa + porta-guardanapo",25]], empilhar:true, inteiras:true,
+  { id:"natal-mesa", nome:"Porta-guardanapo de Natal", preco:null, opcoes:[["Unidade",10],["Kit 3 cores",20],["Placa Feliz Natal",20],["Placa + porta-guardanapo",25]], empilhar:true,
     descricao:"Árvore em espiral para a mesa da ceia. Leve avulso, o kit com 3 em cores diferentes, ou combine com a placa Feliz Natal com rena.",
     fotos:[["img/natal-mesa-1.jpg","Kit cores"],["img/natal-mesa-2.jpg","Kit placa + porta-guardanapo"]] },
   { id:"esquilo", nome:"Porta-vela Esquilo", preco:null,
@@ -166,7 +166,7 @@ PRODUTOS.forEach((p,i)=>{
   sec.innerHTML = logoTopo.replace("{n}", String(i+1).padStart(2,"0")) +
     `<h2 class="titulo">${p.nome}</h2>
      <div class="fotos${p.empilhar?" empilhadas":""}${p.inteiras?" inteiras":""}${p.alto?" altas":""}">${p.fotos.map(([src,leg,pos])=>`<figure><img src="${src}" alt="${p.nome} – ${leg}" loading="lazy"${pos?` style="object-position:${pos}"`:""}><figcaption>${leg}</figcaption></figure>`).join("")}</div>
-     <div class="info${p.opcoes?" com-opcoes":""}"><div><p class="descricao">${p.descricao}</p><span class="tag-cor">Você escolhe a cor</span></div>${preco}</div>${pedir}`;
+     <div class="info${p.opcoes?" com-opcoes":""}"><div><p class="descricao">${p.descricao}</p></div>${preco}</div>${pedir}`;
   cat.appendChild(sec);
 });
 
