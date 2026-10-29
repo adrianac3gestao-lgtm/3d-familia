@@ -74,6 +74,11 @@
   .capa .ano{display:inline-block;margin-top:18px;background:var(--cafe);color:var(--creme);border-radius:999px;padding:6px 16px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:.78rem}
   .cores{margin-top:14px;font-weight:700}
   .tag-cor{display:inline-block;margin-top:10px;background:#fff;border:1.5px dashed var(--caramelo);color:var(--cafe);border-radius:999px;padding:3px 12px;font-size:.8rem;font-weight:700}
+  .paleta{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);gap:14px 6px;margin:18px auto 0;max-width:360px}
+  .paleta li{display:flex;flex-direction:column;align-items:center;gap:4px}
+  .bolinha{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.05rem;border:2px solid #fff;box-shadow:0 0 0 1.5px rgba(91,58,41,.35)}
+  .paleta small{font-size:.7rem;font-weight:700;line-height:1.15;text-align:center}
+  .paleta-dica{margin-top:12px;font-size:.85rem;color:var(--caramelo)}
   .indice{list-style:none;margin-top:26px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
   .indice a{display:block;background:var(--rosinha);color:var(--cafe);text-decoration:none;border-radius:999px;padding:6px 12px;font-size:.85rem;font-weight:600;border:1px solid rgba(91,58,41,.15)}
 
@@ -103,6 +108,8 @@
     <p class="slogan">Feito em camadas, com carinho.</p>
     <span class="ano">Catálogo 2026</span>
     <p class="cores">Todas as peças podem ser feitas na cor que você escolher.</p>
+    <ul class="paleta" aria-label="Cores disponíveis"><li><span class="bolinha" style="background:#F7F5F0;color:#5B3A29">1</span><small>Branco</small></li><li><span class="bolinha" style="background:#1E1E1E;color:#fff">2</span><small>Preto</small></li><li><span class="bolinha" style="background:#D21F2B;color:#fff">3</span><small>Vermelho</small></li><li><span class="bolinha" style="background:#8E1B22;color:#fff">4</span><small>Vermelho escuro</small></li><li><span class="bolinha" style="background:#F28C1A;color:#fff">5</span><small>Laranja</small></li><li><span class="bolinha" style="background:#F4D21F;color:#5B3A29">6</span><small>Amarelo</small></li><li><span class="bolinha" style="background:#1F7A3E;color:#fff">7</span><small>Verde</small></li><li><span class="bolinha" style="background:#9DB8E3;color:#1F2A6B">8</span><small>Azul bebê</small></li><li><span class="bolinha" style="background:#1F2A6B;color:#fff">9</span><small>Azul marinho</small></li><li><span class="bolinha" style="background:#D2B98A;color:#5B3A29">10</span><small>Areia</small></li></ul>
+    <p class="paleta-dica">Escolha pelo número na hora do pedido.</p>
   </section>
 </main>
 
