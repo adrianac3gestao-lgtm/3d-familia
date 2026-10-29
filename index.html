@@ -78,7 +78,7 @@
   .indice a{display:block;background:var(--rosinha);color:var(--cafe);text-decoration:none;border-radius:999px;padding:6px 12px;font-size:.85rem;font-weight:600;border:1px solid rgba(91,58,41,.15)}
 
   /* bastidores */
-  .bastidores video{display:block;width:100%;max-height:520px;object-fit:cover;border-radius:18px;background:#000;border:6px solid #fff}
+  .bastidores video,.bastidores img.foto,.bastidores > img{display:block;width:100%;max-height:520px;object-fit:cover;border-radius:18px;background:#000;border:6px solid #fff}
   .bastidores p{margin-top:14px}
   .rodape{text-align:center;font-size:.85rem;color:var(--caramelo);margin-top:8px}
 
@@ -177,7 +177,7 @@ cat.insertAdjacentHTML("beforeend", `
   <section class="pagina bastidores">
     ${logoTopo.replace("{n}","♥")}
     <h2 class="titulo">Feito aqui em casa</h2>
-    <video src="img/vaso-imprimindo.mp4" poster="img/vaso-imprimindo-capa.jpg" autoplay muted loop playsinline></video>
+    <img src="img/feito-em-casa.jpg" alt="Enfeite de Natal saindo da impressora">
     <p>Cada peça é impressa camada por camada na nossa impressora. Pode levar algumas horas, mas sai do jeitinho que você escolheu.</p>
     ${WHATSAPP ? `<a class="pedir" target="_blank" rel="noopener" href="https://wa.me/${WHATSAPP}">Fale com a gente</a>` : ""}
   </section>
