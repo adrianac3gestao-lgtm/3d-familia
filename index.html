@@ -55,6 +55,9 @@
   .preco small{display:block;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;opacity:.8}
   .preco strong{font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.45rem;line-height:1.1;white-space:nowrap}
   .preco.consulta strong{font-size:1.05rem}
+  .opcao{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:2px}
+  .opcao span{font-size:.8rem;font-weight:700}
+  .opcao strong{font-size:1.1rem}
 
   .pedir{display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:#fff;color:var(--cafe);text-decoration:none;
     font-weight:700;border:2px solid var(--cafe);border-radius:999px;padding:9px 18px;font-size:.92rem}
@@ -124,8 +127,8 @@ const PRODUTOS = [
   { id:"esquilo", nome:"Porta-vela Esquilo", preco:null,
     descricao:"Bandeja canelada com esquilo e porta-vela. Com a velinha acesa, deixa qualquer canto aconchegante.",
     fotos:[["img/esquilo-1.jpg","Com a vela acesa"],["img/esquilo-2.jpg","No escurinho"]] },
-  { id:"bowl", nome:"Bowl e bandeja canelados", preco:null, empilhar:true, inteiras:true,
-    descricao:"Bowl redondo e bandeja oval com acabamento canelado. Servem para frutas, chaves, bijuterias ou só decorar.",
+  { id:"bowl", nome:"Bandejas caneladas", preco:null, opcoes:[["Pequena",15],["Grande",null]], empilhar:true, inteiras:true,
+    descricao:"Bandejas com acabamento canelado, em dois tamanhos. Servem para frutas, chaves, bijuterias ou só decorar.",
     fotos:[["img/bowl-1.jpg","Bowl e bandeja"],["img/bowl-2.jpg","Detalhe do canelado"]] },
   { id:"vaso", nome:"Vaso texturizado", preco:null,
     descricao:"Vaso com textura em losangos, leve e moderno, para flores secas ou só decorar.",
@@ -152,7 +155,9 @@ const logoTopo = '<div class="topo"><span class="marca"><img src="logo.svg" alt=
 PRODUTOS.forEach((p,i)=>{
   const sec = document.createElement("section");
   sec.className = "pagina"; sec.id = p.id;
-  const preco = p.preco==null
+  const preco = p.opcoes
+    ? `<div class="preco"><small>Valor</small>${p.opcoes.map(([t,v])=>`<div class="opcao"><span>${t}</span><strong>${v==null?"consulte":brl(v)}</strong></div>`).join("")}</div>`
+    : p.preco==null
     ? '<div class="preco consulta"><small>Valor</small><strong>Sob consulta</strong></div>'
     : `<div class="preco"><small>Valor</small><strong>${brl(p.preco)}</strong>${p.unidade?`<small>${p.unidade}</small>`:""}</div>`;
   const pedir = WHATSAPP ? `<a class="pedir" target="_blank" rel="noopener" href="https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Olá! Tenho interesse no "+p.nome+" do catálogo 3D Família.")}">Quero este</a>` : "";
