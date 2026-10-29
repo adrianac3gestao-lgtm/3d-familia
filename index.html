@@ -55,6 +55,9 @@
   .preco small{display:block;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;opacity:.8}
   .preco strong{font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.45rem;line-height:1.1;white-space:nowrap}
   .preco.consulta strong{font-size:1.05rem}
+  .info.com-opcoes{flex-direction:column;align-items:stretch}
+  .info.com-opcoes .descricao{max-width:none}
+  .info.com-opcoes .preco{text-align:left;padding:12px 18px}
   .opcao{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:2px}
   .opcao span{font-size:.8rem;font-weight:700}
   .opcao strong{font-size:1.1rem}
@@ -127,7 +130,7 @@ const PRODUTOS = [
   { id:"esquilo", nome:"Porta-vela Esquilo", preco:null,
     descricao:"Bandeja canelada com esquilo e porta-vela. Com a velinha acesa, deixa qualquer canto aconchegante.",
     fotos:[["img/esquilo-1.jpg","Com a vela acesa"],["img/esquilo-2.jpg","No escurinho"]] },
-  { id:"bowl", nome:"Bandejas caneladas", preco:null, opcoes:[["Pequena",15],["Grande",null]], empilhar:true, inteiras:true,
+  { id:"bowl", nome:"Bandejas caneladas", preco:null, opcoes:[["Pequena",15],["Grande",25]], empilhar:true, inteiras:true,
     descricao:"Bandejas com acabamento canelado, em dois tamanhos. Servem para frutas, chaves, bijuterias ou só decorar.",
     fotos:[["img/bowl-1.jpg","Bowl e bandeja"],["img/bowl-2.jpg","Detalhe do canelado"]] },
   { id:"vaso", nome:"Vaso texturizado", preco:null,
@@ -164,7 +167,7 @@ PRODUTOS.forEach((p,i)=>{
   sec.innerHTML = logoTopo.replace("{n}", String(i+1).padStart(2,"0")) +
     `<h2 class="titulo">${p.nome}</h2>
      <div class="fotos${p.empilhar?" empilhadas":""}${p.inteiras?" inteiras":""}${p.alto?" altas":""}">${p.fotos.map(([src,leg,pos])=>`<figure><img src="${src}" alt="${p.nome} – ${leg}" loading="lazy"${pos?` style="object-position:${pos}"`:""}><figcaption>${leg}</figcaption></figure>`).join("")}</div>
-     <div class="info"><div><p class="descricao">${p.descricao}</p><span class="tag-cor">Você escolhe a cor</span></div>${preco}</div>${pedir}`;
+     <div class="info${p.opcoes?" com-opcoes":""}"><div><p class="descricao">${p.descricao}</p><span class="tag-cor">Você escolhe a cor</span></div>${preco}</div>${pedir}`;
   cat.appendChild(sec);
   indice.insertAdjacentHTML("beforeend", `<li><a href="#${p.id}">${p.nome}</a></li>`);
 });
