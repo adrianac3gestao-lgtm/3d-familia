@@ -64,6 +64,8 @@
   .capa .titulo{font-size:clamp(2.6rem,12vw,3.6rem);margin-bottom:6px}
   .capa .slogan{font-size:1.1rem;color:var(--cafe)}
   .capa .ano{display:inline-block;margin-top:18px;background:var(--cafe);color:var(--creme);border-radius:999px;padding:6px 16px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:.78rem}
+  .cores{margin-top:14px;font-weight:700}
+  .tag-cor{display:inline-block;margin-top:10px;background:#fff;border:1.5px dashed var(--caramelo);color:var(--cafe);border-radius:999px;padding:3px 12px;font-size:.8rem;font-weight:700}
   .indice{list-style:none;margin-top:26px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
   .indice a{display:block;background:var(--rosinha);color:var(--cafe);text-decoration:none;border-radius:999px;padding:6px 12px;font-size:.85rem;font-weight:600;border:1px solid rgba(91,58,41,.15)}
 
@@ -92,6 +94,7 @@
     <h1 class="titulo">3D Família</h1>
     <p class="slogan">Feito em camadas, com carinho.</p>
     <span class="ano">Catálogo 2026</span>
+    <p class="cores">Todas as peças podem ser feitas na cor que você escolher.</p>
     <ul class="indice" id="indice"></ul>
   </section>
 </main>
@@ -106,31 +109,31 @@ const WHATSAPP = ""; // ex.: "5511999999999" — deixe vazio para esconder o bot
 const PRODUTOS = [
   { id:"suporte-controle", nome:"Suporte de controle de videogame", preco:null,
     descricao:"Prende na lateral do console e deixa os dois controles organizados e à mão.",
-    fotos:[["img/suporte-controle-1.jpg","No console"],["img/suporte-controle-2.jpg","Saindo da impressora"]] },
-  { id:"porta-livros", nome:"Porta-livros", preco:null,
+    fotos:[["img/suporte-controle-1.jpg","No console"],["img/suporte-controle-2.jpg","Detalhe do encaixe"]] },
+  { id:"porta-livros", nome:"Porta-livros", preco:20,
     descricao:"Mantém os livros em pé na estante, com uma silhueta que vira decoração.",
-    fotos:[["img/porta-livros-1.jpg","Na estante","50% 18%"],["img/porta-livros-2.jpg","Detalhe"]] },
+    fotos:[["img/porta-livros-1.jpg","Na estante"],["img/porta-livros-2.jpg","Detalhe"]] },
   { id:"enfeite-porta", nome:"Enfeite de porta de Natal", preco:null,
     descricao:"Cantoneira colorida que se apoia no batente e deixa a entrada no clima de Natal.",
-    fotos:[["img/enfeite-porta-1.jpg","Detalhe","50% 0%"],["img/enfeite-porta-2.jpg","No batente","0% 50%"]] },
+    fotos:[["img/enfeite-porta-1.jpg","Na porta"],["img/enfeite-porta-2.jpg","De pertinho"]] },
   { id:"natal-mesa", nome:"Porta-guardanapo de Natal", preco:null, empilhar:true,
     descricao:"Árvore em espiral para a mesa da ceia. Na foto, junto com a placa Feliz Natal com rena.",
-    fotos:[["img/guardanapo-arvore.jpg","Vermelho e amarelo"],["img/feliz-natal.jpg","Com a placa Feliz Natal"]] },
+    fotos:[["img/natal-mesa-1.jpg","Na mesa"],["img/natal-mesa-2.jpg","Detalhe da árvore"]] },
   { id:"esquilo", nome:"Bandeja Esquilo", preco:null,
     descricao:"Bandeja canelada com esquilo e cachepô. Linda para aparador, mesa ou banheiro.",
-    fotos:[["img/esquilo-2.jpg","Frente"],["img/esquilo-1.jpg","Vista de cima"]] },
+    fotos:[["img/esquilo-1.jpg","Peça inteira"],["img/esquilo-2.jpg","Detalhe do esquilo"]] },
   { id:"vaso", nome:"Vaso texturizado", preco:null,
     descricao:"Vaso com textura em losangos, leve e moderno, para flores secas ou só decorar.",
-    fotos:[["img/vaso-1.jpg","Frente"],["img/vaso-2.jpg","Boca do vaso"]] },
+    fotos:[["img/vaso-1.jpg","Peça inteira"],["img/vaso-2.jpg","Detalhe da textura"]] },
   { id:"corset", nome:"Porta-pincéis Corset", preco:null,
     descricao:"Porta-pincéis de maquiagem com relevo de renda e amarração. Charme na penteadeira.",
-    fotos:[["img/corset-1.jpg","Detalhe do relevo"],["img/corset-2.jpg","Na penteadeira"]] },
-  { id:"articulados", nome:"Bichinhos articulados", preco:null, empilhar:true,
+    fotos:[["img/corset-1.jpg","Na penteadeira"],["img/corset-2.jpg","Detalhe do relevo"]] },
+  { id:"articulados", nome:"Bichinhos articulados", preco:null,
     descricao:"Orca e panda com corpo articulado que mexe de verdade. Presente que todo mundo quer pegar.",
-    fotos:[["img/orca-panda-1.jpg","Lado a lado"],["img/orca-panda-2.jpg","Orca e panda","50% 58%"]] },
+    fotos:[["img/articulados-1.jpg","Orca e panda"],["img/articulados-2.jpg","Detalhe do panda"]] },
   { id:"chaveiro-panda", nome:"Chaveiro Panda", preco:null, empilhar:true,
     descricao:"Pandinha articulado com argola de metal. Ótimo para lembrancinha.",
-    fotos:[["img/chaveiro-panda-1.jpg","De lado"],["img/chaveiro-panda-2.jpg","De costas"]] },
+    fotos:[["img/chaveiro-panda-1.jpg","Chaveiro inteiro"],["img/chaveiro-panda-2.jpg","De pertinho"]] },
 ];
 /* ===== fim da área de edição ===== */
 
@@ -148,7 +151,7 @@ PRODUTOS.forEach((p,i)=>{
   sec.innerHTML = logoTopo.replace("{n}", String(i+1).padStart(2,"0")) +
     `<h2 class="titulo">${p.nome}</h2>
      <div class="fotos${p.empilhar?" empilhadas":""}">${p.fotos.map(([src,leg,pos])=>`<figure><img src="${src}" alt="${p.nome} – ${leg}" loading="lazy"${pos?` style="object-position:${pos}"`:""}><figcaption>${leg}</figcaption></figure>`).join("")}</div>
-     <div class="info"><p class="descricao">${p.descricao}</p>${preco}</div>${pedir}`;
+     <div class="info"><div><p class="descricao">${p.descricao}</p><span class="tag-cor">Você escolhe a cor</span></div>${preco}</div>${pedir}`;
   cat.appendChild(sec);
   indice.insertAdjacentHTML("beforeend", `<li><a href="#${p.id}">${p.nome}</a></li>`);
 });
