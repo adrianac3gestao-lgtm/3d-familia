@@ -45,6 +45,7 @@
   .fotos.empilhadas{grid-template-columns:1fr}
   .fotos.empilhadas img{aspect-ratio:4/3}
   .fotos.inteiras img{aspect-ratio:auto}
+  .fotos.altas img{aspect-ratio:9/16}
   .fotos figcaption{font-size:.75rem;text-align:center;color:var(--caramelo);padding:4px 2px 0}
 
   .info{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-top:18px}
@@ -126,12 +127,15 @@ const PRODUTOS = [
   { id:"vaso", nome:"Vaso texturizado", preco:null,
     descricao:"Vaso com textura em losangos, leve e moderno, para flores secas ou só decorar.",
     fotos:[["img/vaso-1.jpg","Peça inteira"],["img/vaso-2.jpg","Detalhe da textura"]] },
+  { id:"porta-incenso", nome:"Porta-incenso", preco:30, alto:true,
+    descricao:"Torre vazada que segura o incenso pendurado, com gavetinha que recolhe as cinzas.",
+    fotos:[["img/porta-incenso-1.jpg","Peça inteira"],["img/porta-incenso-2.jpg","Detalhe do vazado"]] },
   { id:"corset", nome:"Porta-pincéis Corset", preco:null,
     descricao:"Porta-pincéis de maquiagem com relevo de renda e amarração. Charme na penteadeira.",
     fotos:[["img/corset-1.jpg","Na penteadeira"],["img/corset-2.jpg","Detalhe do relevo"]] },
-  { id:"articulados", nome:"Bichinhos articulados", preco:null,
-    descricao:"Orca e panda com corpo articulado que mexe de verdade. Presente que todo mundo quer pegar.",
-    fotos:[["img/articulados-1.jpg","Orca e panda"],["img/articulados-2.jpg","Detalhe do panda"]] },
+  { id:"articulados", nome:"Bichinhos articulados", preco:10, unidade:"cada", empilhar:true,
+    descricao:"Orca, panda e arraia com corpo articulado que mexe de verdade. Presente que todo mundo quer pegar.",
+    fotos:[["img/articulados-1.jpg","Orca e panda"],["img/arraia-1.jpg","Arraia"]] },
   { id:"chaveiro-panda", nome:"Chaveiro Panda", preco:null, empilhar:true,
     descricao:"Pandinha articulado com argola de metal. Ótimo para lembrancinha.",
     fotos:[["img/chaveiro-panda-1.jpg","Chaveiro inteiro"],["img/chaveiro-panda-2.jpg","De pertinho"]] },
@@ -147,11 +151,11 @@ PRODUTOS.forEach((p,i)=>{
   sec.className = "pagina"; sec.id = p.id;
   const preco = p.preco==null
     ? '<div class="preco consulta"><small>Valor</small><strong>Sob consulta</strong></div>'
-    : `<div class="preco"><small>Valor</small><strong>${brl(p.preco)}</strong></div>`;
+    : `<div class="preco"><small>Valor</small><strong>${brl(p.preco)}</strong>${p.unidade?`<small>${p.unidade}</small>`:""}</div>`;
   const pedir = WHATSAPP ? `<a class="pedir" target="_blank" rel="noopener" href="https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Olá! Tenho interesse no "+p.nome+" do catálogo 3D Família.")}">Quero este</a>` : "";
   sec.innerHTML = logoTopo.replace("{n}", String(i+1).padStart(2,"0")) +
     `<h2 class="titulo">${p.nome}</h2>
-     <div class="fotos${p.empilhar?" empilhadas":""}${p.inteiras?" inteiras":""}">${p.fotos.map(([src,leg,pos])=>`<figure><img src="${src}" alt="${p.nome} – ${leg}" loading="lazy"${pos?` style="object-position:${pos}"`:""}><figcaption>${leg}</figcaption></figure>`).join("")}</div>
+     <div class="fotos${p.empilhar?" empilhadas":""}${p.inteiras?" inteiras":""}${p.alto?" altas":""}">${p.fotos.map(([src,leg,pos])=>`<figure><img src="${src}" alt="${p.nome} – ${leg}" loading="lazy"${pos?` style="object-position:${pos}"`:""}><figcaption>${leg}</figcaption></figure>`).join("")}</div>
      <div class="info"><div><p class="descricao">${p.descricao}</p><span class="tag-cor">Você escolhe a cor</span></div>${preco}</div>${pedir}`;
   cat.appendChild(sec);
   indice.insertAdjacentHTML("beforeend", `<li><a href="#${p.id}">${p.nome}</a></li>`);
