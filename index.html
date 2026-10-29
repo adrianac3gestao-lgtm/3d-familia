@@ -212,7 +212,7 @@ PRODUTOS.forEach((p,i)=>{
     : p.preco==null
     ? '<div class="preco consulta"><small>Valor</small><strong>Sob consulta</strong></div>'
     : `<div class="preco"><small>Valor</small><strong>${brl(p.preco)}</strong>${p.unidade?`<small>${p.unidade}</small>`:""}</div>`;
-  const pedir = WHATSAPP ? `<button type="button" class="pedir" data-id="${p.id}">Quero este</button>` : "";
+  const pedir = WHATSAPP ? `<button type="button" class="pedir" data-id="${p.id}"><span aria-hidden="true" style="font-size:1.15em">👉</span> Quero este</button>` : "";
   sec.innerHTML = logoTopo.replace("{n}", String(i+1).padStart(2,"0")) +
     `<h2 class="titulo">${p.nome}</h2>
      <div class="fotos${p.empilhar?" empilhadas":""}${p.inteiras?" inteiras":""}${p.alto?" altas":""}">${p.fotos.map(([src,leg,pos])=>`<figure>${src.endsWith(".mp4")?`<video src="${src}" poster="img/porta-copos-capa.jpg" autoplay muted loop playsinline style="display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:13px"></video>`:`<img src="${src}" alt="${p.nome} – ${leg}" loading="lazy"${pos?` style="object-position:${pos}"`:""}>`}<figcaption>${leg}</figcaption></figure>`).join("")}</div>
