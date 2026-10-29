@@ -132,11 +132,14 @@ const PRODUTOS = [
   { id:"bowl", nome:"Bandejas caneladas", preco:null, opcoes:[["Pequena (oval baixa)",15],["Grande (redonda)",25]], empilhar:true, inteiras:true,
     descricao:"Bandejas com acabamento canelado, em dois tamanhos. Servem para frutas, chaves, bijuterias ou só decorar.",
     fotos:[["img/bowl-1.jpg","Bowl e bandeja"],["img/bowl-2.jpg","Detalhe do canelado"]] },
+  { id:"porta-copos", nome:"Porta-copos personalizado", preco:40, unidade:"kit com 6",
+    descricao:"Personalize com a marca da sua empresa. Ótimo para brinde, recepção ou escritório. No vídeo, o kit feito com a logo da C3 Gestão.",
+    fotos:[["img/porta-copos-video.mp4","Saindo da impressora"],["img/porta-copos-2.jpg","Detalhe da logo"]] },
   { id:"vaso", nome:"Vaso texturizado", preco:40,
     descricao:"Vaso com textura em losangos, leve e moderno, para flores secas ou só decorar.",
     fotos:[["img/vaso-1.jpg","Peça inteira"],["img/vaso-2.jpg","Detalhe da textura"]] },
   { id:"porta-incenso", nome:"Porta-incenso", preco:30, alto:true,
-    descricao:"Torre vazada que segura o incenso pendurado, com gavetinha que recolhe as cinzas.",
+    descricao:"Torre vazada que segura o incenso pendurado, com gavetinha que recolhe as cinzas e suporte na lateral para guardar os incensos.",
     fotos:[["img/porta-incenso-1.jpg","Peça inteira"],["img/porta-incenso-2.jpg","Detalhe do vazado"]] },
   { id:"corset", nome:"Porta-pincéis Corset", preco:35,
     descricao:"Porta-pincéis de maquiagem com relevo de renda e amarração. Charme na penteadeira.",
@@ -162,7 +165,7 @@ PRODUTOS.forEach((p,i)=>{
   const pedir = WHATSAPP ? `<a class="pedir" target="_blank" rel="noopener" href="https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Olá! Vi no catálogo 3D Família e tenho interesse em: "+p.nome)}">Quero este</a>` : "";
   sec.innerHTML = logoTopo.replace("{n}", String(i+1).padStart(2,"0")) +
     `<h2 class="titulo">${p.nome}</h2>
-     <div class="fotos${p.empilhar?" empilhadas":""}${p.inteiras?" inteiras":""}${p.alto?" altas":""}">${p.fotos.map(([src,leg,pos])=>`<figure><img src="${src}" alt="${p.nome} – ${leg}" loading="lazy"${pos?` style="object-position:${pos}"`:""}><figcaption>${leg}</figcaption></figure>`).join("")}</div>
+     <div class="fotos${p.empilhar?" empilhadas":""}${p.inteiras?" inteiras":""}${p.alto?" altas":""}">${p.fotos.map(([src,leg,pos])=>`<figure>${src.endsWith(".mp4")?`<video src="${src}" poster="img/porta-copos-capa.jpg" autoplay muted loop playsinline style="display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:13px"></video>`:`<img src="${src}" alt="${p.nome} – ${leg}" loading="lazy"${pos?` style="object-position:${pos}"`:""}>`}<figcaption>${leg}</figcaption></figure>`).join("")}</div>
      <div class="info${p.opcoes?" com-opcoes":""}"><div><p class="descricao">${p.descricao}</p></div>${preco}</div>${pedir}`;
   cat.appendChild(sec);
 });
