@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3D Família · Catálogo</title>
+<meta name="description" content="Peças feitas em impressão 3D, com carinho. Veja o catálogo da 3D Família.">
+<meta property="og:title" content="3D Família · Catálogo">
+<meta property="og:description" content="Peças feitas em impressão 3D, com carinho.">
+<meta property="og:image" content="img/porta-livros-1.jpg">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cafe:#5B3A29; --cafe-escuro:#33190E; --titulo:#9A5F3A; --caramelo:#A47148;
+    --rosa:#E8A5B3; --rosa-claro:#F8DEE4; --rosinha:#FBEAEE; --creme:#FBF5EF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--creme);color:var(--cafe);font-family:'Nunito',system-ui,sans-serif;line-height:1.55;padding:24px 16px 56px}
+  .catalogo{max-width:600px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+
+  .pagina{background:var(--rosa-claro);border-radius:28px;padding:22px 20px 26px;position:relative;overflow:hidden;
+    box-shadow:0 1px 0 #fff inset, 0 12px 30px -18px rgba(91,58,41,.45)}
+  .pagina::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(0deg,transparent 0 9px,rgba(255,255,255,.22) 9px 11px)}
+  .pagina > *{position:relative}
+
+  .topo{display:flex;align-items:center;justify-content:space-between;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--caramelo);margin-bottom:14px}
+  .topo .marca{display:flex;align-items:center;gap:8px}
+  .topo img{width:26px;height:26px}
+
+  .titulo{font-family:'Fredoka',sans-serif;font-weight:700;color:var(--titulo);line-height:1.05;letter-spacing:.01em;
+    font-size:clamp(1.9rem,7.5vw,2.6rem);margin-bottom:16px;
+    text-shadow:
+      2px 0 var(--cafe-escuro),-2px 0 var(--cafe-escuro),0 2px var(--cafe-escuro),0 -2px var(--cafe-escuro),
+      1.5px 1.5px var(--cafe-escuro),-1.5px -1.5px var(--cafe-escuro),1.5px -1.5px var(--cafe-escuro),-1.5px 1.5px var(--cafe-escuro),
+      3px 4px 0 rgba(51,25,14,.25)}
+
+  .fotos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .fotos figure{background:#fff;padding:6px;border-radius:18px;cursor:zoom-in}
+  .fotos img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:13px}
+  .fotos.empilhadas{grid-template-columns:1fr}
+  .fotos.empilhadas img{aspect-ratio:4/3}
+  .fotos figcaption{font-size:.75rem;text-align:center;color:var(--caramelo);padding:4px 2px 0}
+
+  .info{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-top:18px}
+  .descricao{font-size:.98rem;max-width:34ch}
+  .preco{flex:none;background:var(--cafe);color:var(--creme);border-radius:16px;padding:10px 16px;text-align:center;
+    box-shadow:0 0 0 3px var(--rosa-claro),0 0 0 5px var(--cafe-escuro)}
+  .preco small{display:block;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;opacity:.8}
+  .preco strong{font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.45rem;line-height:1.1;white-space:nowrap}
+  .preco.consulta strong{font-size:1.05rem}
+
+  .pedir{display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:#fff;color:var(--cafe);text-decoration:none;
+    font-weight:700;border:2px solid var(--cafe);border-radius:999px;padding:9px 18px;font-size:.92rem}
+  .pedir:hover{background:var(--cafe);color:var(--creme)}
+
+  /* capa */
+  .capa{text-align:center;padding:44px 24px 40px}
+  .capa .logo{width:132px;height:132px;margin:0 auto 18px;display:block}
+  .capa .titulo{font-size:clamp(2.6rem,12vw,3.6rem);margin-bottom:6px}
+  .capa .slogan{font-size:1.1rem;color:var(--cafe)}
+  .capa .ano{display:inline-block;margin-top:18px;background:var(--cafe);color:var(--creme);border-radius:999px;padding:6px 16px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:.78rem}
+  .indice{list-style:none;margin-top:26px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+  .indice a{display:block;background:var(--rosinha);color:var(--cafe);text-decoration:none;border-radius:999px;padding:6px 12px;font-size:.85rem;font-weight:600;border:1px solid rgba(91,58,41,.15)}
+
+  /* bastidores */
+  .bastidores video{display:block;width:100%;max-height:520px;object-fit:cover;border-radius:18px;background:#000;border:6px solid #fff}
+  .bastidores p{margin-top:14px}
+  .rodape{text-align:center;font-size:.85rem;color:var(--caramelo);margin-top:8px}
+
+  /* zoom */
+  .zoom{position:fixed;inset:0;background:rgba(51,25,14,.88);display:none;align-items:center;justify-content:center;padding:16px;z-index:10;cursor:zoom-out}
+  .zoom.aberto{display:flex}
+  .zoom img{max-width:100%;max-height:100%;border-radius:12px}
+
+  @media print{
+    body{background:#fff;padding:0}
+    .catalogo{gap:0;max-width:none}
+    .pagina{break-after:page;box-shadow:none;border-radius:0;min-height:100vh}
+    .pedir,.indice{display:none}
+  }
+</style>
+</head>
+<body>
+<main class="catalogo" id="catalogo">
+  <section class="pagina capa">
+    <img class="logo" src="logo.svg" alt="Logo 3D Família">
+    <h1 class="titulo">3D Família</h1>
+    <p class="slogan">Feito em camadas, com carinho.</p>
+    <span class="ano">Catálogo 2026</span>
+    <ul class="indice" id="indice"></ul>
+  </section>
+</main>
+
+<div class="zoom" id="zoom"><img alt=""></div>
+
+<script>
+/* ===== Edite aqui: produtos e valores =====
+   preco: número (ex.: 49.9) ou null para "sob consulta" */
+const WHATSAPP = ""; // ex.: "5511999999999" — deixe vazio para esconder o botão de pedido
+
+const PRODUTOS = [
+  { id:"suporte-controle", nome:"Suporte de controle de videogame", preco:null,
+    descricao:"Prende na lateral do console e deixa os dois controles organizados e à mão.",
+    fotos:[["img/suporte-controle-1.jpg","No console"],["img/suporte-controle-2.jpg","Saindo da impressora"]] },
+  { id:"porta-livros", nome:"Porta-livros", preco:null,
+    descricao:"Mantém os livros em pé na estante, com uma silhueta que vira decoração.",
+    fotos:[["img/porta-livros-1.jpg","Na estante","50% 18%"],["img/porta-livros-2.jpg","Detalhe"]] },
+  { id:"enfeite-porta", nome:"Enfeite de porta de Natal", preco:null,
+    descricao:"Cantoneira colorida que se apoia no batente e deixa a entrada no clima de Natal.",
+    fotos:[["img/enfeite-porta-1.jpg","Detalhe","50% 0%"],["img/enfeite-porta-2.jpg","No batente","0% 50%"]] },
+  { id:"natal-mesa", nome:"Porta-guardanapo de Natal", preco:null, empilhar:true,
+    descricao:"Árvore em espiral para a mesa da ceia. Na foto, junto com a placa Feliz Natal com rena.",
+    fotos:[["img/guardanapo-arvore.jpg","Vermelho e amarelo"],["img/feliz-natal.jpg","Com a placa Feliz Natal"]] },
+  { id:"esquilo", nome:"Bandeja Esquilo", preco:null,
+    descricao:"Bandeja canelada com esquilo e cachepô. Linda para aparador, mesa ou banheiro.",
+    fotos:[["img/esquilo-2.jpg","Frente"],["img/esquilo-1.jpg","Vista de cima"]] },
+  { id:"vaso", nome:"Vaso texturizado", preco:null,
+    descricao:"Vaso com textura em losangos, leve e moderno, para flores secas ou só decorar.",
+    fotos:[["img/vaso-1.jpg","Frente"],["img/vaso-2.jpg","Boca do vaso"]] },
+  { id:"corset", nome:"Porta-pincéis Corset", preco:null,
+    descricao:"Porta-pincéis de maquiagem com relevo de renda e amarração. Charme na penteadeira.",
+    fotos:[["img/corset-1.jpg","Detalhe do relevo"],["img/corset-2.jpg","Na penteadeira"]] },
+  { id:"articulados", nome:"Bichinhos articulados", preco:null, empilhar:true,
+    descricao:"Orca e panda com corpo articulado que mexe de verdade. Presente que todo mundo quer pegar.",
+    fotos:[["img/orca-panda-1.jpg","Lado a lado"],["img/orca-panda-2.jpg","Orca e panda","50% 58%"]] },
+  { id:"chaveiro-panda", nome:"Chaveiro Panda", preco:null, empilhar:true,
+    descricao:"Pandinha articulado com argola de metal. Ótimo para lembrancinha.",
+    fotos:[["img/chaveiro-panda-1.jpg","De lado"],["img/chaveiro-panda-2.jpg","De costas"]] },
+];
+/* ===== fim da área de edição ===== */
+
+const brl = v => v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const cat = document.getElementById("catalogo"), indice = document.getElementById("indice");
+const logoTopo = '<div class="topo"><span class="marca"><img src="logo.svg" alt="">3D Família</span><span>{n}</span></div>';
+
+PRODUTOS.forEach((p,i)=>{
+  const sec = document.createElement("section");
+  sec.className = "pagina"; sec.id = p.id;
+  const preco = p.preco==null
+    ? '<div class="preco consulta"><small>Valor</small><strong>Sob consulta</strong></div>'
+    : `<div class="preco"><small>Valor</small><strong>${brl(p.preco)}</strong></div>`;
+  const pedir = WHATSAPP ? `<a class="pedir" target="_blank" rel="noopener" href="https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Olá! Tenho interesse no "+p.nome+" do catálogo 3D Família.")}">Quero este</a>` : "";
+  sec.innerHTML = logoTopo.replace("{n}", String(i+1).padStart(2,"0")) +
+    `<h2 class="titulo">${p.nome}</h2>
+     <div class="fotos${p.empilhar?" empilhadas":""}">${p.fotos.map(([src,leg,pos])=>`<figure><img src="${src}" alt="${p.nome} – ${leg}" loading="lazy"${pos?` style="object-position:${pos}"`:""}><figcaption>${leg}</figcaption></figure>`).join("")}</div>
+     <div class="info"><p class="descricao">${p.descricao}</p>${preco}</div>${pedir}`;
+  cat.appendChild(sec);
+  indice.insertAdjacentHTML("beforeend", `<li><a href="#${p.id}">${p.nome}</a></li>`);
+});
+
+cat.insertAdjacentHTML("beforeend", `
+  <section class="pagina bastidores">
+    ${logoTopo.replace("{n}","♥")}
+    <h2 class="titulo">Feito aqui em casa</h2>
+    <video src="img/vaso-imprimindo.mp4" poster="img/vaso-imprimindo-capa.jpg" autoplay muted loop playsinline></video>
+    <p>Cada peça é impressa camada por camada na nossa impressora. Pode levar algumas horas, mas sai do jeitinho que você escolheu.</p>
+    ${WHATSAPP ? `<a class="pedir" target="_blank" rel="noopener" href="https://wa.me/${WHATSAPP}">Fale com a gente</a>` : ""}
+  </section>
+  <p class="rodape">3D Família · catálogo ${new Date().getFullYear()}</p>`);
+
+const zoom = document.getElementById("zoom");
+cat.addEventListener("click", e=>{
+  const img = e.target.closest(".fotos figure")?.querySelector("img");
+  if(img){ zoom.querySelector("img").src = img.src; zoom.classList.add("aberto"); }
+});
+zoom.addEventListener("click", ()=>zoom.classList.remove("aberto"));
+</script>
+</body>
+</html>
