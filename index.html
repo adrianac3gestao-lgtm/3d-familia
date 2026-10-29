@@ -67,6 +67,7 @@
 
   .pedir{display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:#fff;color:var(--cafe);text-decoration:none;
     font-weight:700;border:2px solid var(--cafe);border-radius:999px;padding:9px 18px;font-size:.92rem}
+  button.pedir{font-family:inherit;cursor:pointer}
   .pedir:hover{background:var(--cafe);color:var(--creme)}
 
   /* capa */
@@ -91,6 +92,26 @@
   .rodape{text-align:center;font-size:.85rem;color:var(--caramelo);margin-top:8px}
 
   /* zoom */
+  .folha{position:fixed;inset:0;background:rgba(51,25,14,.55);display:none;align-items:flex-end;justify-content:center;z-index:20}
+  .folha.aberta{display:flex}
+  .folha-box{background:var(--creme);width:100%;max-width:600px;border-radius:26px 26px 0 0;padding:22px 20px 26px;max-height:92vh;overflow:auto;box-shadow:0 -10px 30px rgba(51,25,14,.3)}
+  .folha-box h3{font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.35rem;color:var(--cafe)}
+  .folha-box .sub{font-size:.9rem;color:var(--caramelo);margin-bottom:6px}
+  .folha-box h4{font-size:.95rem;margin:16px 0 8px}
+  .folha .paleta{margin:0;max-width:none}
+  .folha .paleta li{cursor:pointer}
+  .folha .paleta li.sel .bolinha{box-shadow:0 0 0 3px var(--cafe);transform:scale(1.08)}
+  .ops{display:flex;flex-direction:column;gap:8px}
+  .ops button{display:flex;justify-content:space-between;gap:10px;text-align:left;background:#fff;border:2px solid rgba(91,58,41,.2);border-radius:14px;padding:10px 14px;font:inherit;font-weight:700;color:var(--cafe);cursor:pointer}
+  .ops button.sel{border-color:var(--cafe);background:var(--rosinha)}
+  .qtd{display:flex;align-items:center;gap:14px}
+  .qtd button{width:38px;height:38px;border-radius:50%;border:2px solid var(--cafe);background:#fff;font-size:1.2rem;font-weight:700;color:var(--cafe);cursor:pointer}
+  .qtd span{font-family:'Fredoka',sans-serif;font-size:1.3rem;min-width:24px;text-align:center}
+  .aviso{color:#B42318;font-size:.85rem;font-weight:700;margin-top:10px;min-height:1.2em}
+  .acoes{display:flex;gap:10px;margin-top:8px}
+  .acoes button{flex:1;border-radius:999px;padding:12px;font:inherit;font-weight:700;cursor:pointer;border:2px solid var(--cafe)}
+  .enviar{background:var(--cafe);color:var(--creme)}
+  .fechar{background:#fff;color:var(--cafe)}
   .zoom{position:fixed;inset:0;background:rgba(51,25,14,.88);display:none;align-items:center;justify-content:center;padding:16px;z-index:10;cursor:zoom-out}
   .zoom.aberto{display:flex}
   .zoom img{max-width:100%;max-height:100%;border-radius:12px}
@@ -117,6 +138,19 @@
 </main>
 
 <div class="zoom" id="zoom"><img alt=""></div>
+<div class="folha" id="folha" role="dialog" aria-modal="true" aria-labelledby="folha-titulo">
+  <div class="folha-box">
+    <h3 id="folha-titulo"></h3>
+    <p class="sub">Escolha os detalhes do seu pedido</p>
+    <div id="folha-ops"></div>
+    <h4>Qual cor?</h4>
+    <ul class="paleta" id="folha-cores"></ul>
+    <h4>Quantidade</h4>
+    <div class="qtd"><button type="button" id="menos" aria-label="Diminuir">−</button><span id="qtd">1</span><button type="button" id="mais" aria-label="Aumentar">+</button></div>
+    <p class="aviso" id="aviso"></p>
+    <div class="acoes"><button type="button" class="fechar" id="fechar">Voltar</button><button type="button" class="enviar" id="enviar">Enviar no WhatsApp</button></div>
+  </div>
+</div>
 
 <script>
 /* ===== Edite aqui: produtos e valores =====
@@ -175,7 +209,7 @@ PRODUTOS.forEach((p,i)=>{
     : p.preco==null
     ? '<div class="preco consulta"><small>Valor</small><strong>Sob consulta</strong></div>'
     : `<div class="preco"><small>Valor</small><strong>${brl(p.preco)}</strong>${p.unidade?`<small>${p.unidade}</small>`:""}</div>`;
-  const pedir = WHATSAPP ? `<a class="pedir" target="_blank" rel="noopener" href="https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Olá! Vi no catálogo 3D Família e tenho interesse em: "+p.nome)}">Quero este</a>` : "";
+  const pedir = WHATSAPP ? `<button type="button" class="pedir" data-id="${p.id}">Quero este</button>` : "";
   sec.innerHTML = logoTopo.replace("{n}", String(i+1).padStart(2,"0")) +
     `<h2 class="titulo">${p.nome}</h2>
      <div class="fotos${p.empilhar?" empilhadas":""}${p.inteiras?" inteiras":""}${p.alto?" altas":""}">${p.fotos.map(([src,leg,pos])=>`<figure>${src.endsWith(".mp4")?`<video src="${src}" poster="img/porta-copos-capa.jpg" autoplay muted loop playsinline style="display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:13px"></video>`:`<img src="${src}" alt="${p.nome} – ${leg}" loading="lazy"${pos?` style="object-position:${pos}"`:""}>`}<figcaption>${leg}</figcaption></figure>`).join("")}</div>
@@ -199,6 +233,43 @@ cat.addEventListener("click", e=>{
   if(img){ zoom.querySelector("img").src = img.src; zoom.classList.add("aberto"); }
 });
 zoom.addEventListener("click", ()=>zoom.classList.remove("aberto"));
+
+const CORES = [["Branco","#F7F5F0","#5B3A29"],["Preto","#1E1E1E","#fff"],["Vermelho","#D21F2B","#fff"],["Vermelho escuro","#8E1B22","#fff"],["Laranja","#F28C1A","#fff"],
+  ["Amarelo","#F4D21F","#5B3A29"],["Verde","#1F7A3E","#fff"],["Azul bebê","#9DB8E3","#1F2A6B"],["Azul marinho","#1F2A6B","#fff"],["Areia","#D2B98A","#5B3A29"]];
+const folha = document.getElementById("folha"), aviso = document.getElementById("aviso");
+let atual = null, corSel = null, opSel = null, qtd = 1;
+const coresEl = document.getElementById("folha-cores");
+coresEl.innerHTML = CORES.map(([n,c,t],i)=>`<li data-i="${i}"><span class="bolinha" style="background:${c};color:${t}">${i+1}</span><small>${n}</small></li>`).join("");
+coresEl.addEventListener("click", e=>{
+  const li = e.target.closest("li"); if(!li) return;
+  corSel = +li.dataset.i; coresEl.querySelectorAll("li").forEach(x=>x.classList.toggle("sel", x===li)); aviso.textContent="";
+});
+function abrirPedido(id){
+  atual = PRODUTOS.find(p=>p.id===id); corSel = null; opSel = null; qtd = 1; aviso.textContent="";
+  document.getElementById("qtd").textContent = qtd;
+  document.getElementById("folha-titulo").textContent = atual.nome;
+  coresEl.querySelectorAll("li").forEach(x=>x.classList.remove("sel"));
+  const ops = document.getElementById("folha-ops");
+  if(atual.opcoes){
+    ops.innerHTML = `<h4>Qual opção?</h4><div class="ops">${atual.opcoes.map(([t,v],i)=>`<button type="button" data-i="${i}"><span>${t}</span><span>${v==null?"consulte":brl(v)}</span></button>`).join("")}</div>`;
+    ops.querySelectorAll("button").forEach(b=>b.onclick=()=>{opSel=+b.dataset.i; ops.querySelectorAll("button").forEach(x=>x.classList.toggle("sel",x===b)); aviso.textContent="";});
+  } else ops.innerHTML = "";
+  folha.classList.add("aberta");
+}
+cat.addEventListener("click", e=>{ const b = e.target.closest(".pedir[data-id]"); if(b) abrirPedido(b.dataset.id); });
+document.getElementById("menos").onclick=()=>{ if(qtd>1) document.getElementById("qtd").textContent = --qtd; };
+document.getElementById("mais").onclick=()=>{ document.getElementById("qtd").textContent = ++qtd; };
+document.getElementById("fechar").onclick=()=>folha.classList.remove("aberta");
+folha.addEventListener("click", e=>{ if(e.target===folha) folha.classList.remove("aberta"); });
+document.getElementById("enviar").onclick=()=>{
+  if(atual.opcoes && opSel==null){ aviso.textContent="Escolha uma opção primeiro."; return; }
+  if(corSel==null){ aviso.textContent="Escolha uma cor primeiro."; return; }
+  let item = atual.nome;
+  if(atual.opcoes) item += " – " + atual.opcoes[opSel][0];
+  const msg = `Olá! Vi no catálogo 3D Família e quero fazer um pedido:\n• ${item}\n• Cor ${corSel+1} – ${CORES[corSel][0]}\n• Quantidade: ${qtd}`;
+  window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
+  folha.classList.remove("aberta");
+};
 </script>
 </body>
 </html>
