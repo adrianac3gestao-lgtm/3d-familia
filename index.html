@@ -143,8 +143,9 @@
     <h3 id="folha-titulo"></h3>
     <p class="sub">Escolha os detalhes do seu pedido</p>
     <div id="folha-ops"></div>
-    <h4>Qual cor?</h4>
-    <ul class="paleta" id="folha-cores"></ul>
+    <p class="sub" id="cor-fixa" style="margin-top:14px">Cores fixas, como na foto.</p>
+    <div id="cor-bloco"><h4 id="cor-tit">Qual cor?</h4>
+    <ul class="paleta" id="folha-cores"></ul></div>
     <h4>Quantidade</h4>
     <div class="qtd"><button type="button" id="menos" aria-label="Diminuir">−</button><span id="qtd">1</span><button type="button" id="mais" aria-label="Aumentar">+</button></div>
     <p class="aviso" id="aviso"></p>
@@ -164,11 +165,11 @@ const PRODUTOS = [
   { id:"marcador", nome:"Marcador de página", preco:10,
     descricao:"Marcador com gatinho e estante de livros vazada. O gato fica espiando por cima do livro.",
     fotos:[["img/marcador-1.jpg","No livro"],["img/marcador-2.jpg","O gatinho espiando"]] },
-  { id:"enfeite-porta", nome:"Enfeite de porta de Natal", preco:40,
-    descricao:"Cantoneira colorida que se apoia no batente e deixa a entrada no clima de Natal.",
+  { id:"enfeite-porta", nome:"Enfeite de porta de Natal", preco:40, corFixa:true,
+    descricao:"Cantoneira colorida que se apoia no batente e deixa a entrada no clima de Natal. Cores fixas, como na foto.",
     fotos:[["img/enfeite-porta-1.jpg","Na porta"],["img/enfeite-porta-2.jpg","De pertinho"]] },
-  { id:"natal-mesa", nome:"Porta-guardanapo de Natal", preco:null, opcoes:[["Unidade",10],["Kit 3 cores",20],["Placa Feliz Natal",20],["Placa + porta-guardanapo",25]], empilhar:true,
-    descricao:"Árvore em espiral para a mesa da ceia. Leve avulso, o kit com 3 em cores diferentes, ou combine com a placa Feliz Natal com rena.",
+  { id:"natal-mesa", nome:"Porta-guardanapo de Natal", preco:null, opcoes:[["Unidade",10],["Kit 3 cores",20,3],["Placa Feliz Natal",20],["Placa + porta-guardanapo",25]], empilhar:true,
+    descricao:"Árvore em espiral para a mesa da ceia. Leve avulso, o kit com 3 nas cores que você escolher, ou combine com a placa Feliz Natal com rena.",
     fotos:[["img/natal-mesa-1.jpg","Kit cores"],["img/natal-mesa-2.jpg","Kit placa + porta-guardanapo"]] },
   { id:"esquilo", nome:"Porta-vela Esquilo", preco:null, opcoes:[["Porta-vela + vela LED",10],["Kit completo + vela LED",35]],
     descricao:"Bandeja canelada com esquilo e porta-vela. Com a velinha acesa, deixa qualquer canto aconchegante. O kit completo tem esquilo, bandeja, porta-vela e vela de LED.",
@@ -240,23 +241,39 @@ zoom.addEventListener("click", ()=>zoom.classList.remove("aberto"));
 const CORES = [["Branco","#F7F5F0","#5B3A29"],["Preto","#1E1E1E","#fff"],["Vermelho","#D21F2B","#fff"],["Vermelho escuro","#8E1B22","#fff"],["Laranja","#F28C1A","#fff"],
   ["Amarelo","#F4D21F","#5B3A29"],["Verde","#1F7A3E","#fff"],["Azul bebê","#9DB8E3","#1F2A6B"],["Azul marinho","#1F2A6B","#fff"],["Areia","#D2B98A","#5B3A29"]];
 const folha = document.getElementById("folha"), aviso = document.getElementById("aviso");
-let atual = null, corSel = null, opSel = null, qtd = 1;
-const coresEl = document.getElementById("folha-cores");
+let atual = null, cores = [], opSel = null, qtd = 1;
+const coresEl = document.getElementById("folha-cores"), corBloco = document.getElementById("cor-bloco"), corTit = document.getElementById("cor-tit");
 coresEl.innerHTML = CORES.map(([n,c,t],i)=>`<li data-i="${i}"><span class="bolinha" style="background:${c};color:${t}">${i+1}</span><small>${n}</small></li>`).join("");
+function nCores(){
+  if(atual.corFixa) return 0;
+  if(atual.opcoes){ if(opSel==null) return 1; const o = atual.opcoes[opSel]; return o[2]==null ? 1 : o[2]; }
+  return 1;
+}
+function pintaCores(){
+  const n = nCores();
+  if(cores.length > n) cores = cores.slice(-n);
+  corBloco.style.display = n ? "" : "none";
+  corTit.textContent = n>1 ? `Escolha ${n} cores (${cores.length} de ${n})` : "Qual cor?";
+  coresEl.querySelectorAll("li").forEach(x=>x.classList.toggle("sel", cores.includes(+x.dataset.i)));
+}
 coresEl.addEventListener("click", e=>{
   const li = e.target.closest("li"); if(!li) return;
-  corSel = +li.dataset.i; coresEl.querySelectorAll("li").forEach(x=>x.classList.toggle("sel", x===li)); aviso.textContent="";
+  const i = +li.dataset.i, n = nCores();
+  if(cores.includes(i)) cores = cores.filter(x=>x!==i);
+  else { cores.push(i); if(cores.length > n) cores.shift(); }
+  aviso.textContent=""; pintaCores();
 });
 function abrirPedido(id){
-  atual = PRODUTOS.find(p=>p.id===id); corSel = null; opSel = null; qtd = 1; aviso.textContent="";
+  atual = PRODUTOS.find(p=>p.id===id); cores = []; opSel = null; qtd = 1; aviso.textContent="";
   document.getElementById("qtd").textContent = qtd;
   document.getElementById("folha-titulo").textContent = atual.nome;
-  coresEl.querySelectorAll("li").forEach(x=>x.classList.remove("sel"));
   const ops = document.getElementById("folha-ops");
   if(atual.opcoes){
     ops.innerHTML = `<h4>Qual opção?</h4><div class="ops">${atual.opcoes.map(([t,v],i)=>`<button type="button" data-i="${i}"><span>${t}</span><span>${v==null?"consulte":brl(v)}</span></button>`).join("")}</div>`;
-    ops.querySelectorAll("button").forEach(b=>b.onclick=()=>{opSel=+b.dataset.i; ops.querySelectorAll("button").forEach(x=>x.classList.toggle("sel",x===b)); aviso.textContent="";});
+    ops.querySelectorAll("button").forEach(b=>b.onclick=()=>{opSel=+b.dataset.i; ops.querySelectorAll("button").forEach(x=>x.classList.toggle("sel",x===b)); aviso.textContent=""; pintaCores();});
   } else ops.innerHTML = "";
+  document.getElementById("cor-fixa").style.display = atual.corFixa ? "" : "none";
+  pintaCores();
   folha.classList.add("aberta");
 }
 cat.addEventListener("click", e=>{ const b = e.target.closest(".pedir[data-id]"); if(b) abrirPedido(b.dataset.id); });
@@ -266,10 +283,12 @@ document.getElementById("fechar").onclick=()=>folha.classList.remove("aberta");
 folha.addEventListener("click", e=>{ if(e.target===folha) folha.classList.remove("aberta"); });
 document.getElementById("enviar").onclick=()=>{
   if(atual.opcoes && opSel==null){ aviso.textContent="Escolha uma opção primeiro."; return; }
-  if(corSel==null){ aviso.textContent="Escolha uma cor primeiro."; return; }
+  const n = nCores();
+  if(cores.length < n){ aviso.textContent = n>1 ? `Escolha as ${n} cores (faltam ${n-cores.length}).` : "Escolha uma cor primeiro."; return; }
   let item = atual.nome;
   if(atual.opcoes) item += " – " + atual.opcoes[opSel][0];
-  const msg = `Olá! Vi no catálogo 3D Família e quero fazer um pedido:\n• ${item}\n• Cor ${corSel+1} – ${CORES[corSel][0]}\n• Quantidade: ${qtd}`;
+  const linhaCor = n===0 ? "• Cores: como na foto" : n===1 ? `• Cor ${cores[0]+1} – ${CORES[cores[0]][0]}` : `• Cores: ${cores.map(i=>`${i+1} – ${CORES[i][0]}`).join(", ")}`;
+  const msg = `Olá! Vi no catálogo 3D Família e quero fazer um pedido:\n• ${item}\n${linhaCor}\n• Quantidade: ${qtd}`;
   window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
   folha.classList.remove("aberta");
 };
