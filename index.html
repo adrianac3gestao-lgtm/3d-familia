@@ -108,6 +108,10 @@
   .qtd button{width:38px;height:38px;border-radius:50%;border:2px solid var(--cafe);background:#fff;font-size:1.2rem;font-weight:700;color:var(--cafe);cursor:pointer}
   .qtd span{font-family:'Fredoka',sans-serif;font-size:1.3rem;min-width:24px;text-align:center}
   .logo-aviso{margin-top:14px;background:var(--rosinha);border:1.5px dashed var(--caramelo);border-radius:14px;padding:10px 14px;font-size:.9rem;font-weight:700}
+  .ok p{margin-top:8px}
+  .ok-tit{font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.2rem;color:#1F7A3E}
+  .ok pre{white-space:pre-wrap;font:inherit;font-size:.9rem;background:#fff;border-radius:14px;padding:12px 14px;margin:12px 0;border:1.5px solid rgba(91,58,41,.2)}
+  a.enviar{display:flex;align-items:center;justify-content:center;text-decoration:none;flex:1;border-radius:999px;padding:12px;font-weight:700;border:2px solid var(--cafe)}
   .aviso{color:#B42318;font-size:.85rem;font-weight:700;margin-top:10px;min-height:1.2em}
   .acoes{display:flex;gap:10px;margin-top:8px}
   .acoes button{flex:1;border-radius:999px;padding:12px;font:inherit;font-weight:700;cursor:pointer;border:2px solid var(--cafe)}
@@ -142,6 +146,13 @@
 <div class="folha" id="folha" role="dialog" aria-modal="true" aria-labelledby="folha-titulo">
   <div class="folha-box">
     <h3 id="folha-titulo"></h3>
+    <div id="folha-ok" class="ok" style="display:none">
+      <p class="ok-tit">✅ Pedido montado!</p>
+      <p>Abrimos o WhatsApp com a mensagem pronta. <b>Para concluir, toque em enviar ➤ lá no WhatsApp.</b></p>
+      <pre id="ok-msg"></pre>
+      <div class="acoes"><button type="button" class="fechar" id="ok-fechar">Fechar</button><a class="enviar" id="ok-link" target="_blank" rel="noopener">Abrir WhatsApp</a></div>
+    </div>
+    <div id="folha-form">
     <p class="sub">Escolha os detalhes do seu pedido</p>
     <div id="folha-ops"></div>
     <p class="sub" id="cor-fixa" style="margin-top:14px">Cores fixas, como na foto.</p>
@@ -152,6 +163,7 @@
     <div class="qtd"><button type="button" id="menos" aria-label="Diminuir">−</button><span id="qtd">1</span><button type="button" id="mais" aria-label="Aumentar">+</button></div>
     <p class="aviso" id="aviso"></p>
     <div class="acoes"><button type="button" class="fechar" id="fechar">Voltar</button><button type="button" class="enviar" id="enviar">Enviar no WhatsApp</button></div>
+    </div>
   </div>
 </div>
 
@@ -278,12 +290,14 @@ function abrirPedido(id){
   } else ops.innerHTML = "";
   document.getElementById("logo-aviso").style.display = atual.logo ? "" : "none";
   pintaCores();
+  document.getElementById("folha-ok").style.display="none"; document.getElementById("folha-form").style.display="";
   folha.classList.add("aberta");
 }
 cat.addEventListener("click", e=>{ const b = e.target.closest(".pedir[data-id]"); if(b) abrirPedido(b.dataset.id); });
 document.getElementById("menos").onclick=()=>{ if(qtd>1) document.getElementById("qtd").textContent = --qtd; };
 document.getElementById("mais").onclick=()=>{ document.getElementById("qtd").textContent = ++qtd; };
 document.getElementById("fechar").onclick=()=>folha.classList.remove("aberta");
+document.getElementById("ok-fechar").onclick=()=>folha.classList.remove("aberta");
 folha.addEventListener("click", e=>{ if(e.target===folha) folha.classList.remove("aberta"); });
 document.getElementById("enviar").onclick=()=>{
   if(atual.opcoes && opSel==null){ aviso.textContent="Escolha uma opção primeiro."; return; }
@@ -293,8 +307,12 @@ document.getElementById("enviar").onclick=()=>{
   if(atual.opcoes) item += " – " + atual.opcoes[opSel][0];
   const linhaCor = n===0 ? "• Cores: como na foto" : n===1 ? `• Cor ${cores[0]+1} – ${CORES[cores[0]][0]}` : `• Cores: ${cores.map(i=>`${i+1} – ${CORES[i][0]}`).join(", ")}`;
   const msg = `Olá! Vi no catálogo 3D Família e quero fazer um pedido:\n• ${item}\n${linhaCor}\n• Quantidade: ${qtd}${atual.logo ? "\n• Logo: vou enviar o arquivo aqui" : ""}`;
-  window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
-  folha.classList.remove("aberta");
+  const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
+  document.getElementById("ok-msg").textContent = msg;
+  document.getElementById("ok-link").href = url;
+  document.getElementById("folha-form").style.display="none"; document.getElementById("folha-ok").style.display="";
+  const w = window.open(url, "_blank");
+  if(!w) location.href = url;
 };
 </script>
 </body>
