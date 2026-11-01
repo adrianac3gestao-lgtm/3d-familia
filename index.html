@@ -147,10 +147,10 @@
   <div class="folha-box">
     <h3 id="folha-titulo"></h3>
     <div id="folha-ok" class="ok" style="display:none">
-      <p class="ok-tit">✅ Pedido montado!</p>
-      <p>Abrimos o WhatsApp com a mensagem pronta. <b>Para concluir, toque em enviar ➤ lá no WhatsApp.</b></p>
+      <p class="ok-tit">✅ Pedido pronto!</p>
+      <p>1. Toque em <b>"Abrir WhatsApp"</b> abaixo.<br>2. A mensagem já vai estar escrita: é só tocar em <b>enviar ➤</b>.</p>
       <pre id="ok-msg"></pre>
-      <div class="acoes"><button type="button" class="fechar" id="ok-fechar">Fechar</button><a class="enviar" id="ok-link" target="_blank" rel="noopener">Abrir WhatsApp</a></div>
+      <div class="acoes"><button type="button" class="fechar" id="ok-fechar">Voltar</button><a class="enviar" id="ok-link">Abrir WhatsApp</a></div>
     </div>
     <div id="folha-form">
     <p class="sub">Escolha os detalhes do seu pedido</p>
@@ -162,7 +162,7 @@
     <h4>Quantidade</h4>
     <div class="qtd"><button type="button" id="menos" aria-label="Diminuir">−</button><span id="qtd">1</span><button type="button" id="mais" aria-label="Aumentar">+</button></div>
     <p class="aviso" id="aviso"></p>
-    <div class="acoes"><button type="button" class="fechar" id="fechar">Voltar</button><button type="button" class="enviar" id="enviar">Enviar no WhatsApp</button></div>
+    <div class="acoes"><button type="button" class="fechar" id="fechar">Voltar</button><button type="button" class="enviar" id="enviar">Continuar</button></div>
     </div>
   </div>
 </div>
@@ -311,8 +311,7 @@ document.getElementById("enviar").onclick=()=>{
   document.getElementById("ok-msg").textContent = msg;
   document.getElementById("ok-link").href = url;
   document.getElementById("folha-form").style.display="none"; document.getElementById("folha-ok").style.display="";
-  const w = window.open(url, "_blank");
-  if(!w) location.href = url;
+
 };
 </script>
 </body>
