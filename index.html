@@ -107,6 +107,7 @@
   .qtd{display:flex;align-items:center;gap:14px}
   .qtd button{width:38px;height:38px;border-radius:50%;border:2px solid var(--cafe);background:#fff;font-size:1.2rem;font-weight:700;color:var(--cafe);cursor:pointer}
   .qtd span{font-family:'Fredoka',sans-serif;font-size:1.3rem;min-width:24px;text-align:center}
+  .logo-aviso{margin-top:14px;background:var(--rosinha);border:1.5px dashed var(--caramelo);border-radius:14px;padding:10px 14px;font-size:.9rem;font-weight:700}
   .aviso{color:#B42318;font-size:.85rem;font-weight:700;margin-top:10px;min-height:1.2em}
   .acoes{display:flex;gap:10px;margin-top:8px}
   .acoes button{flex:1;border-radius:999px;padding:12px;font:inherit;font-weight:700;cursor:pointer;border:2px solid var(--cafe)}
@@ -144,6 +145,7 @@
     <p class="sub">Escolha os detalhes do seu pedido</p>
     <div id="folha-ops"></div>
     <p class="sub" id="cor-fixa" style="margin-top:14px">Cores fixas, como na foto.</p>
+    <p class="logo-aviso" id="logo-aviso">📎 Depois de enviar o pedido, mande o arquivo da sua logo (imagem ou PDF) na mesma conversa do WhatsApp.</p>
     <div id="cor-bloco"><h4 id="cor-tit">Qual cor?</h4>
     <ul class="paleta" id="folha-cores"></ul></div>
     <h4>Quantidade</h4>
@@ -168,7 +170,7 @@ const PRODUTOS = [
   { id:"enfeite-porta", nome:"Enfeite de porta de Natal", preco:40, corFixa:true,
     descricao:"Cantoneira colorida que se apoia no batente e deixa a entrada no clima de Natal. Cores fixas, como na foto.",
     fotos:[["img/enfeite-porta-1.jpg","Na porta"],["img/enfeite-porta-2.jpg","De pertinho"]] },
-  { id:"natal-mesa", nome:"Porta-guardanapo de Natal", preco:null, opcoes:[["Unidade",10],["Kit 3 cores",20,3],["Placa Feliz Natal",20],["Placa + porta-guardanapo",25]], empilhar:true,
+  { id:"natal-mesa", nome:"Porta-guardanapo de Natal", preco:null, opcoes:[["Unidade",10],["Kit 3 cores",20,3],["Placa Feliz Natal",20,0],["Placa + porta-guardanapo",25,1,"Cor do porta-guardanapo (a placa tem cores fixas)"]], empilhar:true,
     descricao:"Árvore em espiral para a mesa da ceia. Leve avulso, o kit com 3 nas cores que você escolher, ou combine com a placa Feliz Natal com rena.",
     fotos:[["img/natal-mesa-1.jpg","Kit cores"],["img/natal-mesa-2.jpg","Kit placa + porta-guardanapo"]] },
   { id:"esquilo", nome:"Porta-vela Esquilo", preco:null, opcoes:[["Porta-vela + vela LED",10],["Kit completo + vela LED",35]],
@@ -177,7 +179,7 @@ const PRODUTOS = [
   { id:"bowl", nome:"Bandejas caneladas", preco:null, opcoes:[["Pequena (oval baixa)",15],["Grande (redonda)",25]], empilhar:true, inteiras:true,
     descricao:"Bandejas com acabamento canelado, em dois tamanhos. Servem para frutas, chaves, bijuterias ou só decorar.",
     fotos:[["img/bowl-1.jpg","Bowl e bandeja"],["img/bowl-2.jpg","Detalhe do canelado"]] },
-  { id:"porta-copos", nome:"Porta-copos personalizado", preco:40, unidade:"kit com 6",
+  { id:"porta-copos", nome:"Porta-copos personalizado", preco:40, logo:true, unidade:"kit com 6",
     descricao:"Personalize com a marca da sua empresa. Ótimo para brinde, recepção ou escritório. No vídeo, o kit feito com a logo da C3 Gestão.",
     fotos:[["img/porta-copos-video.mp4","Saindo da impressora"],["img/porta-copos-2.jpg","Detalhe da logo"]] },
   { id:"vaso", nome:"Vaso texturizado", preco:40,
@@ -253,7 +255,9 @@ function pintaCores(){
   const n = nCores();
   if(cores.length > n) cores = cores.slice(-n);
   corBloco.style.display = n ? "" : "none";
-  corTit.textContent = n>1 ? `Escolha ${n} cores (${cores.length} de ${n})` : "Qual cor?";
+  const rot = atual.opcoes && opSel!=null && atual.opcoes[opSel][3];
+  corTit.textContent = n>1 ? `Escolha ${n} cores (${cores.length} de ${n})` : (rot || "Qual cor?");
+  document.getElementById("cor-fixa").style.display = n ? "none" : "";
   coresEl.querySelectorAll("li").forEach(x=>x.classList.toggle("sel", cores.includes(+x.dataset.i)));
 }
 coresEl.addEventListener("click", e=>{
@@ -272,7 +276,7 @@ function abrirPedido(id){
     ops.innerHTML = `<h4>Qual opção?</h4><div class="ops">${atual.opcoes.map(([t,v],i)=>`<button type="button" data-i="${i}"><span>${t}</span><span>${v==null?"consulte":brl(v)}</span></button>`).join("")}</div>`;
     ops.querySelectorAll("button").forEach(b=>b.onclick=()=>{opSel=+b.dataset.i; ops.querySelectorAll("button").forEach(x=>x.classList.toggle("sel",x===b)); aviso.textContent=""; pintaCores();});
   } else ops.innerHTML = "";
-  document.getElementById("cor-fixa").style.display = atual.corFixa ? "" : "none";
+  document.getElementById("logo-aviso").style.display = atual.logo ? "" : "none";
   pintaCores();
   folha.classList.add("aberta");
 }
@@ -288,7 +292,7 @@ document.getElementById("enviar").onclick=()=>{
   let item = atual.nome;
   if(atual.opcoes) item += " – " + atual.opcoes[opSel][0];
   const linhaCor = n===0 ? "• Cores: como na foto" : n===1 ? `• Cor ${cores[0]+1} – ${CORES[cores[0]][0]}` : `• Cores: ${cores.map(i=>`${i+1} – ${CORES[i][0]}`).join(", ")}`;
-  const msg = `Olá! Vi no catálogo 3D Família e quero fazer um pedido:\n• ${item}\n${linhaCor}\n• Quantidade: ${qtd}`;
+  const msg = `Olá! Vi no catálogo 3D Família e quero fazer um pedido:\n• ${item}\n${linhaCor}\n• Quantidade: ${qtd}${atual.logo ? "\n• Logo: vou enviar o arquivo aqui" : ""}`;
   window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
   folha.classList.remove("aberta");
 };
