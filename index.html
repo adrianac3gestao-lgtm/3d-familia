@@ -186,7 +186,7 @@ const WHATSAPP = "5511973420686"; // ex.: "5511999999999" — deixe vazio para e
 const PRODUTOS = [
   { id:"porta-livros", nome:"Porta-livros", preco:20, layout:"tres",
     descricao:"Mantém os livros em pé na estante, com uma silhueta que vira decoração.",
-    fotos:[["img/porta-livros-1.jpg","Na mesa"],["img/porta-livros-2.jpg","Detalhe dos óculos"],["img/porta-livros-3.jpg","Plaquinha 9¾"]] },
+    fotos:[["img/porta-livros-1.jpg","Na estante"],["img/porta-livros-2.jpg","Detalhe dos óculos"],["img/porta-livros-3.jpg","Plaquinha 9¾"]] },
   { id:"marcador", nome:"Marcador de página", preco:10,
     descricao:"Marcador com gatinho e estante de livros vazada. O gato fica espiando por cima do livro.",
     fotos:[["img/marcador-1.jpg","No livro"],["img/marcador-2.jpg","O gatinho espiando"]] },
@@ -211,7 +211,7 @@ const PRODUTOS = [
   { id:"festa", nome:"Personalizados para festa", preco:null, opcoes:[["Porta-guardanapo caneca",30,1],["Topo de bolo personalizado",30,0]], layout:"tres-topo", personaliza:true, notaCor:"As cores do topo de bolo combinamos pelo WhatsApp.",
     descricao:"Deixe sua festa com a sua cara: topo de bolo com nome, idade e frase, e porta-guardanapo no tema da festa.",
     fotos:[["img/festa-topo.jpg","Topo de bolo personalizado"],["img/festa-1.jpg","Caneca"],["img/festa-2.jpg","Impressão"]] },
-  { id:"vaso", nome:"Vaso texturizado", preco:null, opcoes:[["Trio (P, M e G)",60,3],["Grande",40],["Médio",30],["Pequeno",30]], layout:"tres-topo",
+  { id:"vaso", nome:"Vaso texturizado", preco:null, opcoes:[["Trio (P, M e G)",60,3],["Grande",40],["Médio",30],["Pequeno",30]], quadro:[["Trio (P, M e G)",60],["Grande",40],["Médio ou pequeno",30]], layout:"tres-topo",
     descricao:"Vaso com textura em losangos, leve e moderno, em 3 tamanhos. Monte um trio com cores diferentes!",
     fotos:[["img/vaso-trio.jpg","Trio P, M e G (montagem)"],["img/vaso-1.jpg","Vermelho"],["img/vaso-amarelo.jpg","Amarelo"]] },
   { id:"lua", nome:"Coleção Lua", preco:null, opcoes:[["Vaso lua com base preta",40,0],["Porta-caneta lua",35,1]],
@@ -243,7 +243,7 @@ PRODUTOS.forEach((p,i)=>{
   const sec = document.createElement("section");
   sec.className = "pagina"; sec.id = p.id;
   const preco = p.opcoes
-    ? `<div class="preco"><small>Valor</small>${p.opcoes.map(([t,v])=>`<div class="opcao"><span>${t}</span><strong>${v==null?"consulte":brl(v)}</strong></div>`).join("")}</div>`
+    ? `<div class="preco"><small>Valor</small>${(p.quadro||p.opcoes).map(([t,v])=>`<div class="opcao"><span>${t}</span><strong>${v==null?"consulte":brl(v)}</strong></div>`).join("")}</div>`
     : p.preco==null
     ? '<div class="preco consulta"><small>Valor</small><strong>Sob consulta</strong></div>'
     : `<div class="preco"><small>Valor</small><strong>${brl(p.preco)}</strong>${p.unidade?`<small>${p.unidade}</small>`:""}</div>`;
