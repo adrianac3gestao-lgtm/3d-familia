@@ -60,6 +60,7 @@
   .fotos.empilhadas img{aspect-ratio:4/3}
   .fotos.inteiras img{aspect-ratio:auto}
   .fotos.altas img{aspect-ratio:9/16}
+  .fotos figcaption:empty{display:none}
   .fotos figcaption{font-size:.75rem;text-align:center;color:var(--caramelo);padding:4px 2px 0}
 
   .info{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-top:18px}
@@ -222,7 +223,7 @@ const PRODUTOS = [
     fotos:[["img/porta-incenso-1.jpg","Peça inteira"],["img/porta-incenso-2.jpg","Detalhe do vazado"]] },
   { id:"corset", nome:"Porta-pincéis Corset", preco:35, layout:"tres",
     descricao:"Porta-pincéis de maquiagem com relevo de renda e amarração. Charme na penteadeira.",
-    fotos:[["img/corset-1.jpg","Na penteadeira"],["img/corset-vermelho.jpg","Em vermelho"],["img/corset-2.jpg","Em azul"]] },
+    fotos:[["img/corset-1.jpg","Na penteadeira"],["img/corset-vermelho.jpg",""],["img/corset-2.jpg",""]] },
   { id:"jogos", nome:"Jogos", preco:null, opcoes:[["Jogo da velha",15],["Cubo infinito",15]], empilhar:true,
     descricao:"Jogo da velha com pecinhas de X e O, e cubo infinito que dobra e desdobra sem parar. Diversão rápida para crianças e adultos.",
     fotos:[["img/jogos-1.jpg","Jogo da velha"],["img/jogos-2.jpg","Cubo infinito"]] },
