@@ -148,7 +148,7 @@
     <p class="slogan">Feito em camadas, com carinho.</p>
     <span class="ano">Catálogo 2026</span>
     <p class="cores">Todas as peças podem ser feitas na cor que você escolher.</p>
-    <ul class="paleta" aria-label="Cores disponíveis"><li><span class="bolinha" style="background:#F7F5F0;color:#5B3A29">1</span><small>Branco</small></li><li><span class="bolinha" style="background:#1E1E1E;color:#fff">2</span><small>Preto</small></li><li><span class="bolinha" style="background:#D21F2B;color:#fff">3</span><small>Vermelho</small></li><li><span class="bolinha" style="background:#8E1B22;color:#fff">4</span><small>Vermelho escuro</small></li><li><span class="bolinha" style="background:#F28C1A;color:#fff">5</span><small>Laranja</small></li><li><span class="bolinha" style="background:#F4D21F;color:#5B3A29">6</span><small>Amarelo</small></li><li><span class="bolinha" style="background:#1F7A3E;color:#fff">7</span><small>Verde</small></li><li><span class="bolinha" style="background:#9DB8E3;color:#1F2A6B">8</span><small>Azul bebê</small></li><li><span class="bolinha" style="background:#1F2A6B;color:#fff">9</span><small>Azul marinho</small></li><li><span class="bolinha" style="background:#D2B98A;color:#5B3A29">10</span><small>Areia</small></li></ul>
+    <ul class="paleta" id="paleta-capa" aria-label="Cores disponíveis"></ul>
     <p class="paleta-dica">Escolha pelo número na hora do pedido.</p>
   </section>
 </main>
@@ -272,11 +272,13 @@ cat.addEventListener("click", e=>{
 });
 zoom.addEventListener("click", ()=>zoom.classList.remove("aberto"));
 
-const CORES = [["Branco","#F7F5F0","#5B3A29"],["Preto","#1E1E1E","#fff"],["Vermelho","#D21F2B","#fff"],["Vermelho escuro","#8E1B22","#fff"],["Laranja","#F28C1A","#fff"],
-  ["Amarelo","#F4D21F","#5B3A29"],["Verde","#1F7A3E","#fff"],["Azul bebê","#9DB8E3","#1F2A6B"],["Azul marinho","#1F2A6B","#fff"],["Areia","#D2B98A","#5B3A29"]];
+const CORES = [["Branco","#F7F5F0","#5B3A29"],["Preto","#1E1E1E","#fff"],["Cinza","#9EA2A6","#fff"],["Vermelho","#E0262F","#fff"],["Vermelho coração","#B5172B","#fff"],
+  ["Laranja","#F28C1A","#fff"],["Amarelo","#F4D21F","#5B3A29"],["Dourado","#E9A21A","#fff"],["Verde","#1F7A3E","#fff"],["Azul bebê","#9DB8E3","#1F2A6B"],
+  ["Azul marinho","#1F2A6B","#fff"],["Areia","#D2B98A","#5B3A29"],["Creme","#D9A877","#5B3A29"],["Marrom","#6B3E26","#fff"]];
 const folha = document.getElementById("folha"), aviso = document.getElementById("aviso");
 let atual = null, cores = [], opSel = null, qtd = 1;
 const coresEl = document.getElementById("folha-cores"), corBloco = document.getElementById("cor-bloco"), corTit = document.getElementById("cor-tit");
+document.getElementById("paleta-capa").innerHTML = CORES.map(([n,c,t],i)=>`<li><span class="bolinha" style="background:${c};color:${t}">${i+1}</span><small>${n}</small></li>`).join("");
 coresEl.innerHTML = CORES.map(([n,c,t],i)=>`<li data-i="${i}"><span class="bolinha" style="background:${c};color:${t}">${i+1}</span><small>${n}</small></li>`).join("");
 function nCores(){
   if(atual.corFixa) return 0;
