@@ -45,6 +45,17 @@
   .fotos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .fotos figure{background:#fff;padding:6px;border-radius:18px;cursor:zoom-in}
   .fotos img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:13px}
+  .fotos video{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:13px;background:#000}
+  .fotos.tres,.fotos.tres-topo{gap:10px}
+  .fotos.tres{grid-template-rows:1fr 1fr;aspect-ratio:1/1.15}
+  .fotos.tres figure:first-child{grid-row:span 2}
+  .fotos.tres-topo figure:first-child{grid-column:span 2}
+  .fotos.tres-topo img,.fotos.tres-topo video{aspect-ratio:1}
+  .fotos.tres-topo figure:first-child img{aspect-ratio:4/3}
+  .fotos.tres figure{position:relative;display:flex;min-height:0}
+  .fotos.tres img,.fotos.tres video{aspect-ratio:auto;height:100%}
+  .fotos.tres figcaption,.fotos.tres-topo figcaption{position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.92);border-radius:999px;padding:3px 10px;font-weight:700;color:var(--cafe)}
+  .fotos.tres-topo figure{position:relative}
   .fotos.empilhadas{grid-template-columns:1fr}
   .fotos.empilhadas img{aspect-ratio:4/3}
   .fotos.inteiras img{aspect-ratio:auto}
@@ -155,7 +166,7 @@
     <div id="folha-form">
     <p class="sub">Escolha os detalhes do seu pedido</p>
     <div id="folha-ops"></div>
-    <p class="sub" id="cor-fixa" style="margin-top:14px">Cores fixas, como na foto.</p>
+    <p class="sub" id="cor-fixa" style="margin-top:14px"></p>
     <p class="logo-aviso" id="logo-aviso">📎 Depois de enviar o pedido, mande o arquivo da sua logo (imagem ou PDF) na mesma conversa do WhatsApp.</p>
     <div id="cor-bloco"><h4 id="cor-tit">Qual cor?</h4>
     <ul class="paleta" id="folha-cores"></ul></div>
@@ -173,9 +184,9 @@
 const WHATSAPP = "5511973420686"; // ex.: "5511999999999" — deixe vazio para esconder o botão de pedido
 
 const PRODUTOS = [
-  { id:"porta-livros", nome:"Porta-livros", preco:20,
+  { id:"porta-livros", nome:"Porta-livros", preco:20, layout:"tres",
     descricao:"Mantém os livros em pé na estante, com uma silhueta que vira decoração.",
-    fotos:[["img/porta-livros-1.jpg","Na estante"],["img/porta-livros-2.jpg","Detalhe do rosto, com óculos"]] },
+    fotos:[["img/porta-livros-1.jpg","Na mesa"],["img/porta-livros-2.jpg","Detalhe dos óculos"],["img/porta-livros-3.jpg","Plaquinha 9¾"]] },
   { id:"marcador", nome:"Marcador de página", preco:10,
     descricao:"Marcador com gatinho e estante de livros vazada. O gato fica espiando por cima do livro.",
     fotos:[["img/marcador-1.jpg","No livro"],["img/marcador-2.jpg","O gatinho espiando"]] },
@@ -185,6 +196,9 @@ const PRODUTOS = [
   { id:"natal-mesa", nome:"Porta-guardanapo de Natal", preco:null, opcoes:[["Unidade",10],["Kit 3 cores",20,3],["Placa Feliz Natal",20,0],["Placa + porta-guardanapo",25,1,"Cor do porta-guardanapo (a placa tem cores fixas)"]], empilhar:true,
     descricao:"Árvore em espiral para a mesa da ceia. Leve avulso, o kit com 3 nas cores que você escolher, ou combine com a placa Feliz Natal com rena.",
     fotos:[["img/natal-mesa-1.jpg","Kit cores"],["img/natal-mesa-2.jpg","Kit placa + porta-guardanapo"]] },
+  { id:"gnomos", nome:"Luminárias Papai Noel e Gnomo", preco:null, opcoes:[["Papai Noel",20,0],["Gnomo",20,0]], layout:"tres",
+    descricao:"Luminárias com estrelinhas vazadas que brilham quando acesas. Deixam a decoração de Natal muito aconchegante.",
+    fotos:[["img/gnomos-1.jpg","Acesos"],["img/gnomos-2.jpg","No escurinho"],["img/gnomos-3.jpg","Na decoração"]] },
   { id:"esquilo", nome:"Porta-vela Esquilo", preco:null, opcoes:[["Porta-vela + vela LED",10],["Kit completo + vela LED",35]],
     descricao:"Bandeja canelada com esquilo e porta-vela. Com a velinha acesa, deixa qualquer canto aconchegante. O kit completo tem esquilo, bandeja, porta-vela e vela de LED.",
     fotos:[["img/esquilo-1.jpg","Acesa"],["img/esquilo-2.jpg","Porta-vela separado"]] },
@@ -194,15 +208,21 @@ const PRODUTOS = [
   { id:"porta-copos", nome:"Porta-copos personalizado", preco:40, logo:true, unidade:"kit com 6",
     descricao:"Personalize com a marca da sua empresa. Ótimo para brinde, recepção ou escritório. No vídeo, o kit feito com a logo da C3 Gestão.",
     fotos:[["img/porta-copos-video.mp4","Saindo da impressora"],["img/porta-copos-2.jpg","Detalhe da logo"]] },
-  { id:"vaso", nome:"Vaso texturizado", preco:40,
-    descricao:"Vaso com textura em losangos, leve e moderno, para flores secas ou só decorar.",
-    fotos:[["img/vaso-1.jpg","Peça inteira"],["img/vaso-2.jpg","Detalhe da textura"]] },
+  { id:"festa", nome:"Personalizados para festa", preco:null, opcoes:[["Porta-guardanapo caneca",30,1],["Topo de bolo personalizado",30,0]], layout:"tres", personaliza:true, notaCor:"As cores do topo de bolo combinamos pelo WhatsApp.",
+    descricao:"Deixe sua festa com a sua cara: topo de bolo com nome, idade e frase, e porta-guardanapo no tema da festa.",
+    fotos:[["img/festa-video.mp4","Topo de bolo personalizado"],["img/festa-1.jpg","Porta-guardanapo caneca"],["img/festa-2.jpg","Saindo da impressora"]] },
+  { id:"vaso", nome:"Vaso texturizado", preco:40, unidade:"cada", layout:"tres-topo",
+    descricao:"Vaso com textura em losangos, leve e moderno. Monte um trio com tamanhos e cores diferentes!",
+    fotos:[["img/vaso-trio.jpg","Trio em tamanhos diferentes (montagem)"],["img/vaso-1.jpg","Vermelho"],["img/vaso-amarelo.jpg","Amarelo"]] },
+  { id:"lua", nome:"Coleção Lua", preco:null, opcoes:[["Vaso lua com base preta",40,0],["Porta-caneta lua",35,1]],
+    descricao:"Peças inspiradas na lua: vaso com crateras sobre base de pedra preta e porta-caneta redondo com crateras em relevo canelado.",
+    fotos:[["img/lua-1.jpg","Vaso lua com base preta"],["img/lua-2.jpg","Porta-caneta lua"]] },
   { id:"porta-incenso", nome:"Porta-incenso", preco:30, alto:true,
     descricao:"Torre vazada que segura o incenso pendurado, com gavetinha que recolhe as cinzas e suporte na lateral para guardar os incensos.",
     fotos:[["img/porta-incenso-1.jpg","Peça inteira"],["img/porta-incenso-2.jpg","Detalhe do vazado"]] },
-  { id:"corset", nome:"Porta-pincéis Corset", preco:35,
+  { id:"corset", nome:"Porta-pincéis Corset", preco:35, layout:"tres",
     descricao:"Porta-pincéis de maquiagem com relevo de renda e amarração. Charme na penteadeira.",
-    fotos:[["img/corset-1.jpg","Na penteadeira"],["img/corset-2.jpg","Detalhe do relevo"]] },
+    fotos:[["img/corset-video.mp4","Em vermelho"],["img/corset-1.jpg","Na penteadeira"],["img/corset-2.jpg","Detalhe do relevo"]] },
   { id:"jogos", nome:"Jogos", preco:null, opcoes:[["Jogo da velha",15],["Cubo infinito",15]], empilhar:true,
     descricao:"Jogo da velha com pecinhas de X e O, e cubo infinito que dobra e desdobra sem parar. Diversão rápida para crianças e adultos.",
     fotos:[["img/jogos-1.jpg","Jogo da velha"],["img/jogos-2.jpg","Cubo infinito"]] },
@@ -230,7 +250,7 @@ PRODUTOS.forEach((p,i)=>{
   const pedir = WHATSAPP ? `<button type="button" class="pedir" data-id="${p.id}"><span aria-hidden="true" style="font-size:1.15em">👉</span> Quero este</button>` : "";
   sec.innerHTML = logoTopo.replace("{n}", String(i+1).padStart(2,"0")) +
     `<h2 class="titulo">${p.nome}</h2>
-     <div class="fotos${p.empilhar?" empilhadas":""}${p.inteiras?" inteiras":""}${p.alto?" altas":""}">${p.fotos.map(([src,leg,pos])=>`<figure>${src.endsWith(".mp4")?`<video src="${src}" poster="img/porta-copos-capa.jpg" autoplay muted loop playsinline style="display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:13px"></video>`:`<img src="${src}" alt="${p.nome} – ${leg}" loading="lazy"${pos?` style="object-position:${pos}"`:""}>`}<figcaption>${leg}</figcaption></figure>`).join("")}</div>
+     <div class="fotos${p.layout?" "+p.layout:""}${p.empilhar?" empilhadas":""}${p.inteiras?" inteiras":""}${p.alto?" altas":""}">${p.fotos.map(([src,leg,pos])=>`<figure>${src.endsWith(".mp4")?`<video src="${src}" poster="${src.replace(".mp4",".jpg")}" autoplay muted loop playsinline></video>`:`<img src="${src}" alt="${p.nome} – ${leg}" loading="lazy"${pos?` style="object-position:${pos}"`:""}>`}<figcaption>${leg}</figcaption></figure>`).join("")}</div>
      <div class="info${p.opcoes?" com-opcoes":""}"><div><p class="descricao">${p.descricao}</p></div>${preco}</div>${pedir}`;
   cat.appendChild(sec);
 });
@@ -269,7 +289,7 @@ function pintaCores(){
   corBloco.style.display = n ? "" : "none";
   const rot = atual.opcoes && opSel!=null && atual.opcoes[opSel][3];
   corTit.textContent = n>1 ? `Escolha ${n} cores (${cores.length} de ${n})` : (rot || "Qual cor?");
-  document.getElementById("cor-fixa").style.display = n ? "none" : "";
+  const cf = document.getElementById("cor-fixa"); cf.textContent = atual.notaCor || "Cores fixas, como na foto."; cf.style.display = n ? "none" : "";
   coresEl.querySelectorAll("li").forEach(x=>x.classList.toggle("sel", cores.includes(+x.dataset.i)));
 }
 coresEl.addEventListener("click", e=>{
@@ -288,7 +308,9 @@ function abrirPedido(id){
     ops.innerHTML = `<h4>Qual opção?</h4><div class="ops">${atual.opcoes.map(([t,v],i)=>`<button type="button" data-i="${i}"><span>${t}</span><span>${v==null?"consulte":brl(v)}</span></button>`).join("")}</div>`;
     ops.querySelectorAll("button").forEach(b=>b.onclick=()=>{opSel=+b.dataset.i; ops.querySelectorAll("button").forEach(x=>x.classList.toggle("sel",x===b)); aviso.textContent=""; pintaCores();});
   } else ops.innerHTML = "";
-  document.getElementById("logo-aviso").style.display = atual.logo ? "" : "none";
+  const la = document.getElementById("logo-aviso");
+  la.textContent = atual.logo ? "📎 Depois de enviar o pedido, mande o arquivo da sua logo (imagem ou PDF) na mesma conversa do WhatsApp." : "✏️ Depois de enviar o pedido, mande no WhatsApp o tema, nome, idade e frase que você quer na peça.";
+  la.style.display = (atual.logo || atual.personaliza) ? "" : "none";
   pintaCores();
   document.getElementById("folha-ok").style.display="none"; document.getElementById("folha-form").style.display="";
   folha.classList.add("aberta");
@@ -306,7 +328,7 @@ document.getElementById("enviar").onclick=()=>{
   let item = atual.nome;
   if(atual.opcoes) item += " – " + atual.opcoes[opSel][0];
   const linhaCor = n===0 ? "• Cores: como na foto" : n===1 ? `• Cor ${cores[0]+1} – ${CORES[cores[0]][0]}` : `• Cores: ${cores.map(i=>`${i+1} – ${CORES[i][0]}`).join(", ")}`;
-  const msg = `Olá! Vi no catálogo 3D Família e quero fazer um pedido:\n• ${item}\n${linhaCor}\n• Quantidade: ${qtd}${atual.logo ? "\n• Logo: vou enviar o arquivo aqui" : ""}`;
+  const msg = `Olá! Vi no catálogo 3D Família e quero fazer um pedido:\n• ${item}\n${linhaCor}\n• Quantidade: ${qtd}${atual.logo ? "\n• Logo: vou enviar o arquivo aqui" : ""}${atual.personaliza ? "\n• Personalização: vou mandar os detalhes aqui" : ""}`;
   const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
   document.getElementById("ok-msg").textContent = msg;
   document.getElementById("ok-link").href = url;
