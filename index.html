@@ -92,7 +92,7 @@
   .paleta{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);gap:14px 6px;margin:18px auto 0;max-width:360px}
   .paleta li{display:flex;flex-direction:column;align-items:center;gap:4px}
   .bolinha{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.05rem;border:2px solid #fff;box-shadow:0 0 0 1.5px rgba(91,58,41,.35)}
-  .paleta small{font-size:.7rem;font-weight:700;line-height:1.15;text-align:center}
+  .paleta small{font-size:.68rem;font-weight:700;line-height:1.2;text-align:center;min-height:2.4em;word-break:normal;hyphens:none;overflow-wrap:normal}
   .paleta-dica{margin-top:12px;font-size:.85rem;color:var(--caramelo)}
   .indice{list-style:none;margin-top:26px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
   .indice a{display:block;background:var(--rosinha);color:var(--cafe);text-decoration:none;border-radius:999px;padding:6px 12px;font-size:.85rem;font-weight:600;border:1px solid rgba(91,58,41,.15)}
@@ -274,7 +274,7 @@ zoom.addEventListener("click", ()=>zoom.classList.remove("aberto"));
 
 const CORES = [["Branco","#F7F5F0","#5B3A29"],["Preto","#1E1E1E","#fff"],["Cinza","#9EA2A6","#fff"],["Vermelho","#E0262F","#fff"],["Vermelho coração","#B5172B","#fff"],
   ["Laranja","#F28C1A","#fff"],["Amarelo","#F4D21F","#5B3A29"],["Dourado","#E9A21A","#fff"],["Verde","#1F7A3E","#fff"],["Azul bebê","#9DB8E3","#1F2A6B"],
-  ["Azul marinho","#1F2A6B","#fff"],["Areia","#D2B98A","#5B3A29"],["Creme","#D9A877","#5B3A29"],["Marrom","#6B3E26","#fff"]];
+  ["Azul marinho","#1F2A6B","#fff"],["Areia","#D2B98A","#5B3A29"],["Creme","#D9A877","#5B3A29"],["Marrom","#6B3E26","#fff"],["Pink","#E8478B","#fff"]];
 const folha = document.getElementById("folha"), aviso = document.getElementById("aviso");
 let atual = null, cores = [], opSel = null, qtd = 1;
 const coresEl = document.getElementById("folha-cores"), corBloco = document.getElementById("cor-bloco"), corTit = document.getElementById("cor-tit");
