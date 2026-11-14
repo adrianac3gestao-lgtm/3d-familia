@@ -207,9 +207,9 @@ const PRODUTOS = [
   { id:"arvore", nome:"Árvore de Natal canelada", preco:null, opcoes:[["Árvore com estrela",20],["Árvore alta (sem estrela)",20]],
     descricao:"Árvore em espiral com textura canelada, em dois modelos: menor com estrela no topo, ou mais alta e pontuda. Linda sozinha ou na bandeja.",
     fotos:[["img/arvore-1.jpg","Com estrela e alta"],["img/gnomos-4.jpg","Na decoração"]] },
-  { id:"esquilo", nome:"Esquilo e Ouriço com porta-vela", preco:null, opcoes:[["Porta-vela + vela LED",10],["Kit Esquilo (esquilo + bandeja + porta-vela + vela LED)",35],["Kit Ouriço (ouriço + bandeja + porta-vela + vela LED)",35],["Kit Esquilo + Ouriço (bandeja + porta-vela + vela LED)",40,2]],
-    quadro:[["Porta-vela + vela LED",10],["Kit Esquilo ou Kit Ouriço",35],["Kit Esquilo + Ouriço",40]], layout:"tres-topo",
-    descricao:"Bandeja canelada com esquilo ou ouriço e porta-vela. Com a velinha acesa, deixa qualquer canto aconchegante. Os kits vêm com bandeja, porta-vela e vela de LED; no kit com os dois, você escolhe a cor de cada bichinho.",
+  { id:"esquilo", nome:"Esquilo e Ouriço com porta-vela", preco:null, opcoes:[["Porta-vela + vela LED",10],["Kit Esquilo (esquilo + bandeja + porta-vela + vela LED)",35],["Kit Ouriço (ouriço + bandeja + porta-vela + vela LED)",35],["Kit Esquilo + Ouriço (bandeja, sem porta-vela)",40,2,"Escolha 2 cores: 1ª = esquilo, 2ª = ouriço",["Esquilo","Ouriço"]]],
+    quadro:[["Porta-vela + vela LED",10],["Kit Esquilo ou Kit Ouriço",35],["Kit Esquilo + Ouriço (sem porta-vela)",40]], layout:"tres-topo",
+    descricao:"Bandeja canelada com esquilo ou ouriço e porta-vela. Com a velinha acesa, deixa qualquer canto aconchegante. Os kits com um bichinho vêm com bandeja, porta-vela e vela de LED. O kit com os dois vem só com a bandeja (sem porta-vela, para caberem os dois), e você escolhe a cor de cada bichinho.",
     fotos:[["img/ouri-1.jpg","Esquilo e ouriço"],["img/esquilo-1.jpg","Acesa"],["img/ouri-2.jpg","Ouriço"]] },
   { id:"bowl", nome:"Bandejas caneladas", preco:null, opcoes:[["Pequena (oval baixa)",15],["Grande (redonda)",25]], empilhar:true, inteiras:true,
     descricao:"Bandejas com acabamento canelado, em dois tamanhos. Servem para frutas, chaves, bijuterias ou só decorar.",
@@ -305,7 +305,7 @@ function pintaCores(){
   if(cores.length > n) cores = cores.slice(-n);
   corBloco.style.display = n ? "" : "none";
   const rot = atual.opcoes && opSel!=null && atual.opcoes[opSel][3];
-  corTit.textContent = n>1 ? `Escolha ${n} cores (${cores.length} de ${n})` : (rot || "Qual cor?");
+  corTit.textContent = n>1 ? `${rot || `Escolha ${n} cores`} (${cores.length} de ${n})` : (rot || "Qual cor?");
   const cf = document.getElementById("cor-fixa"); cf.textContent = atual.notaCor || "Cores fixas, como na foto."; cf.style.display = n ? "none" : "";
   coresEl.querySelectorAll("li").forEach(x=>x.classList.toggle("sel", cores.includes(+x.dataset.i)));
 }
@@ -344,7 +344,7 @@ document.getElementById("enviar").onclick=()=>{
   if(cores.length < n){ aviso.textContent = n>1 ? `Escolha as ${n} cores (faltam ${n-cores.length}).` : "Escolha uma cor primeiro."; return; }
   let item = atual.nome;
   if(atual.opcoes) item += " – " + atual.opcoes[opSel][0];
-  const linhaCor = n===0 ? "• Cores: como na foto" : n===1 ? `• Cor ${cores[0]+1} – ${CORES[cores[0]][0]}` : `• Cores: ${cores.map(i=>`${i+1} – ${CORES[i][0]}`).join(", ")}`;
+  const linhaCor = n===0 ? "• Cores: como na foto" : n===1 ? `• Cor ${cores[0]+1} – ${CORES[cores[0]][0]}` : `• Cores: ${cores.map((i,k)=>`${(atual.opcoes&&atual.opcoes[opSel]&&atual.opcoes[opSel][4])?atual.opcoes[opSel][4][k]+": ":""}${i+1} – ${CORES[i][0]}`).join(", ")}`;
   const msg = `Olá! Vi no catálogo 3D Família e quero fazer um pedido:\n• ${item}\n${linhaCor}\n• Quantidade: ${qtd}${atual.logo ? "\n• Logo: vou enviar o arquivo aqui" : ""}${atual.personaliza ? "\n• Personalização: vou mandar os detalhes aqui" : ""}`;
   const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
   document.getElementById("ok-msg").textContent = msg;
